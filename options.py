@@ -11,7 +11,7 @@ c = TDClient(TOKEN)
 
 def get_put_spreads():
     spreads = []
-    option_data = c.options('HUBS', hi='bye')['putExpDateMap']['2020-01-17:34']
+    option_data = c.options('HUBS', strategy='VERTICAL')['putExpDateMap']['2020-01-17:34']
     sorted_strikes = sort_by_strike(option_data)
     
     for i in range(len(sorted_strikes)-1):
