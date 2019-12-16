@@ -12,3 +12,9 @@ def sort_by_strike(strike_dict):
     sorted_strikes = map_to_str(sorted(map_to_float(strike_dict.keys())))
     
     return [strike_dict[price] for price in sorted_strikes]
+
+def compute_profit_rank(strike_spread):
+    expected_profit = strike_spread['expected_profit']
+    if expected_profit < 0:
+        return 0
+    return expected_profit / strike_spread['max_profit']
