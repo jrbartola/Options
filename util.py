@@ -13,8 +13,7 @@ def sort_by_strike(strike_dict):
     
     return [strike_dict[price] for price in sorted_strikes]
 
-def compute_profit_rank(strike_spread):
-    expected_profit = strike_spread['expected_profit']
+def compute_profit_rank(expected_profit, max_profit):
     if expected_profit < 0:
         return 0
-    return expected_profit / strike_spread['max_profit']
+    return expected_profit / max_profit
