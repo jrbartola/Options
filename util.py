@@ -8,6 +8,9 @@ def map_to_str(l):
 def map_to_float(l):
     return map_to(l, float)
 
+def to_camel_case(str): 
+    return ''.join(['_'+i.lower() if i.isupper() else i for i in str]).lstrip('_') 
+
 def sort_by_strike(strike_dict):
     sorted_strikes = map_to_str(sorted(map_to_float(strike_dict.keys())))
     
