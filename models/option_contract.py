@@ -22,9 +22,9 @@ class OptionContract(object):
         dte_volatility = daily_volatility * (self.dte ** 0.5)
 
         if self.contract_type == 'CALL':
-            return 1 - norm.cdf(self.strike, loc=self.underlying_price, scale=dte_volatility)
+            return 1 - norm.cdf(self.strike, loc=self.underlying_price, scale=self.underlying_price * dte_volatility)
 
-        return norm.cdf(self.strike, loc=self.underlying_price, scale=dte_volatility)
+        return norm.cdf(self.strike, loc=self.underlying_price, scale=self.underlying_price * dte_volatility)
 
     def prob_otm(self):
         return 1 - self.prob_itm()

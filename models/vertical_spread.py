@@ -43,7 +43,7 @@ class VerticalSpread(Spread):
         
         if self.contract_type == 'CALL':
             prob_in_the_middle = 1 - self.low_leg.prob_otm() - self.high_leg.prob_itm()
-            if self.__is_credit_spread():
+            if self.__is_credit_spread(): 
                 return self.low_leg.prob_otm() * self.max_profit + self.high_leg.prob_itm() * self.max_loss + prob_in_the_middle * avg_btw_strike_profit
             
             return self.low_leg.prob_otm() * self.max_loss + self.high_leg.prob_itm() * self.max_profit + prob_in_the_middle * avg_btw_strike_profit
