@@ -1,5 +1,6 @@
 
-from option_chain import get_option_chain, get_price_quote, get_volatility
+from api.option_chain import get_option_chain
+from api.quotes import get_price_quote, get_volatility
 
 from models.option_contract import OptionContract
 from models.vertical_spread import VerticalSpread
@@ -10,7 +11,6 @@ def analyze_verticals(symbol, contract_type, credit_or_debit, max_strike_width=5
     dte_map = get_option_chain(symbol)[contract_type]
     stock_quote = get_price_quote(symbol)
     volatility = get_volatility(symbol)
-    print('volatility is', volatility)
 
     if credit_or_debit == 'CREDIT':
         return analyze_credit_spreads(dte_map, contract_type, stock_quote, volatility, max_strike_width)

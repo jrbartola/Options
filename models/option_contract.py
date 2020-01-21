@@ -1,5 +1,7 @@
 from scipy.stats import norm
-from util import to_camel_case
+
+from util import to_camel_case, to_dte_volatility
+
 
 class OptionContract(object):
     def __init__(self, price, symbol, contract_type, strike, dte, value, volatility):
@@ -14,12 +16,17 @@ class OptionContract(object):
         self.volatility = volatility
     
     def __repr__(self):
-        return '<{symbol} {type} {strike} {dte}>'.format(symbol=self.symbol, type=self.contract_type, strike=self.strike, dte=self.dte)
+        return '<{symbol} {type} {strike} {dte} DTE>'.format(symbol=self.symbol, type=self.contract_type, strike=self.strike, dte=self.dte)
+    
+    @property
+    def breakeven(self):
+        if self.contract_type == 'CALL':
+            return self.strike + abs(self.value)
+
+        return self.strike - abs(self.value)
 
     def prob_itm(self):
-        # First, convert annual volatility to daily
-        daily_volatility = self.volatility / (365**0.5)
-        dte_volatility = daily_volatility * (self.dte ** 0.5)
+        dte_volatility = to_dte_volatility(self.volatility, self.dte)
 
         if self.contract_type == 'CALL':
             return 1 - norm.cdf(self.strike, loc=self.underlying_price, scale=self.underlying_price * dte_volatility)
@@ -28,3 +35,12 @@ class OptionContract(object):
 
     def prob_otm(self):
         return 1 - self.prob_itm()
+
+    def prob_profit(self):
+        dte_volatility = to_dte_volatility(self.volatility, self.dte)
+ 
+        # Short calls and long puts have the same profit profile
+        if self.value > 0 and self.contract_type == 'CALL' or self.value < 0 and self.contract_type == 'PUT':
+            return norm.cdf(self.breakeven, loc=self.underlying_price, scale=self.underlying_price * dte_volatility)
+        else:
+            return 1 - norm.cdf(self.breakeven, loc=self.underlying_price, scale=self.underlying_price * dte_volatility)

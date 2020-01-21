@@ -1,4 +1,7 @@
+from scipy.stats import norm
+
 from models.spread import Spread
+from util import to_dte_volatility
 
 class VerticalSpread(Spread):
     def __init__(self, high_leg, low_leg):
@@ -57,3 +60,10 @@ class VerticalSpread(Spread):
         
         # Should never happen
         raise RuntimeError
+    
+    def prob_profit(self):
+        dte_volatility = to_dte_volatility(self.low_leg.volatility, self.low_leg.dte)
+        
+        if self.__is_credit_spread():
+            if self.contract_type == 'CALL':
+                return norm.cdf(self.low_leg.strike + self.value, loc=self.low_leg.underlying_price, scale=self.low_leg.underlying_price * dte_volatility)

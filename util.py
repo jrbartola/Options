@@ -11,12 +11,6 @@ def map_to_float(l):
 def to_camel_case(str): 
     return ''.join(['_'+i.lower() if i.isupper() else i for i in str]).lstrip('_') 
 
-def sort_by_strike(strike_dict):
-    sorted_strikes = map_to_str(sorted(map_to_float(strike_dict.keys())))
-    
-    return [strike_dict[price] for price in sorted_strikes]
-
-def compute_profit_rank(expected_profit, max_profit):
-    if expected_profit < 0:
-        return 0
-    return expected_profit / max_profit
+def to_dte_volatility(annual_volatility, dte):
+    daily_volatility = annual_volatility / (365**0.5)
+    return daily_volatility * (dte ** 0.5)
