@@ -7,16 +7,14 @@ class IronCondor(Spread):
         self.put_spread = put_spread
         self.dte = dte
         self.credit = call_spread.max_profit + put_spread.max_profit
-        if call_spread.value < 0 or put_spread.value < 0:
-            print(call_spread, put_spread)
 
     def __repr__(self):
-        return '<IronCondor({}) {}/{} - {}/{} [{} DTE]'.format(self.symbol,
-                                                               self.put_spread.low_leg.strike,
-                                                               self.put_spread.high_leg.strike,
-                                                               self.call_spread.low_leg.strike,
-                                                               self.call_spread.high_leg.strike,
-                                                               self.dte)
+        return '<IronCondor({}) {}/{} - {}/{} [{} DTE] >'.format(self.symbol,
+                                                                 self.put_spread.low_leg.strike,
+                                                                 self.put_spread.high_leg.strike,
+                                                                 self.call_spread.low_leg.strike,
+                                                                 self.call_spread.high_leg.strike,
+                                                                 self.dte)
 
     @property
     def credit_percentage(self):
@@ -29,10 +27,11 @@ class IronCondor(Spread):
 
     @property
     def max_loss(self):
-        return max(self.call_spread.max_loss, self.put_spread.max_loss)
+        return self.max_profit - max(self.call_spread.high_leg.strike - self.call_spread.low_leg.strike,
+                                     self.put_spread.high_leg.strike - self.put_spread.low_leg.strike)
 
     def expected_profit(self):
         return self.call_spread.expected_profit() + self.put_spread.expected_profit()
 
     def prob_profit(self):
-        return 1 - self.call_spread.prob_profit() - self.put_spread.prob_profit()
+        return self.call_spread.prob_profit() + self.put_spread.prob_profit() - 1
