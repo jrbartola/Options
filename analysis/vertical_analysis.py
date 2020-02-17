@@ -37,7 +37,8 @@ def analyze_credit_spreads(dte_map, contract_type, stock_quote, volatility, max_
                                                    contract_type=contract_type,
                                                    strike=high_option['strikePrice'],
                                                    dte=dte,
-                                                   value=-high_option['ask'] if contract_type == 'CALL' else high_option['bid'],
+                                                   bid=high_option['bid'],
+                                                   ask=high_option['ask']
                                                    volatility=volatility)
 
                 low_option_model = OptionContract(price=stock_quote['lastPrice'],
@@ -45,7 +46,8 @@ def analyze_credit_spreads(dte_map, contract_type, stock_quote, volatility, max_
                                                   contract_type=contract_type,
                                                   strike=low_option['strikePrice'],
                                                   dte=dte,
-                                                  value=low_option['bid'] if contract_type == 'CALL' else -low_option['ask'],
+                                                  bid=low_option['bid'],
+                                                  ask=low_option['ask'],
                                                   volatility=volatility)
 
                 vertical_model = VerticalSpread(high_leg=high_option_model, low_leg=low_option_model)
