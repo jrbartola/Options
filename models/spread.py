@@ -10,3 +10,6 @@ class Spread(object):
 
     def expected_profit(self):
         raise NotImplementedError
+    
+    def prob_profit(self):
+        raise NotImplementedError

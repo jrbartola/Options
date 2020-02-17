@@ -12,6 +12,6 @@ def get_option_chain(symbol, low_dte=30, high_dte=45, min_volume=50):
     call_data = data['callExpDateMap']
     put_data = data['putExpDateMap']
 
-    volume_filter = lambda option: option['totalVolume'] < min_volume
+    volume_filter = lambda option: option['totalVolume'] > min_volume
 
     return {'CALL': map_option_chain(call_data, volume_filter), 'PUT': map_option_chain(put_data, volume_filter)}
