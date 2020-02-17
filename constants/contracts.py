@@ -1,0 +1,6 @@
+
+
+CALL = 'CALL'
+PUT = 'PUT'
+
+CONTRACT_TYPES = {CALL, PUT}

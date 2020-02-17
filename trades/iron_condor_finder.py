@@ -1,13 +1,16 @@
 import pandas as pd
 
-from analysis.vertical_analysis import analyze_verticals
+from processors.filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt, max_profit_gt
+from processors.vertical_processors import process_verticals
+
+from constants.transactions import CREDIT
+from constants.contracts import CALL, PUT
 from models.iron_condor import IronCondor
-from analysis.filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt, max_profit_gt
 
 
 def find_profitable_iron_condors(symbol, prob_profit=0.5):
-    call_data = analyze_verticals(symbol, 'CALL', 'CREDIT', max_strike_width=10)
-    put_data = analyze_verticals(symbol, 'PUT', 'CREDIT', max_strike_width=10)
+    call_data = process_verticals(symbol, CALL, CREDIT, max_strike_width=10)
+    put_data = process_verticals(symbol, PUT, CREDIT, max_strike_width=10)
     call_spreads = []
     put_spreads = []
     iron_condors = []

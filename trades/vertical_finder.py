@@ -1,12 +1,14 @@
 import pandas as pd
 
-from analysis.vertical_analysis import analyze_verticals
+from processors.filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt
+from processors.vertical_processors import process_verticals
+
+from constants.transactions import CREDIT
 from models.option_contract import OptionContract
-from analysis.filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt
 
 
 def find_profitable_verticals(symbol, contract_type):
-    data = analyze_verticals(symbol, contract_type, 'CREDIT', max_strike_width=10)
+    data = process_verticals(symbol, contract_type, CREDIT, max_strike_width=10)
     spreads = []
 
     for dte in data:

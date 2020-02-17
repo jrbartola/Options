@@ -2,19 +2,21 @@
 from api.option_chain import get_option_chain
 from api.quotes import get_price_quote, get_volatility
 
+from constants.transactions import CREDIT, DEBIT
+from constants.contracts import CALL, PUT
 from models.option_contract import OptionContract
 from models.vertical_spread import VerticalSpread
 
-def analyze_verticals(symbol, contract_type, credit_or_debit, max_strike_width=50):
-    assert(credit_or_debit in {'CREDIT', 'DEBIT'})
+def process_verticals(symbol, contract_type, credit_or_debit, max_strike_width=50):
+    assert(credit_or_debit in {CREDIT, DEBIT})
 
     dte_maps, underlying_price = get_option_chain(symbol)
     volatility = get_volatility(symbol)
 
-    if credit_or_debit == 'CREDIT':
-        return analyze_credit_spreads(dte_maps[contract_type], contract_type, underlying_price, volatility, max_strike_width)
+    if credit_or_debit == CREDIT:
+        return process_credit_spreads(dte_maps[contract_type], contract_type, underlying_price, volatility, max_strike_width)
 
-def analyze_credit_spreads(dte_map, contract_type, underlying_price, volatility, max_strike_width=None):
+def process_credit_spreads(dte_map, contract_type, underlying_price, volatility, max_strike_width=None):
     result_dte_map = {}
 
     for dte, strike_map in dte_map.items():
@@ -38,7 +40,7 @@ def analyze_credit_spreads(dte_map, contract_type, underlying_price, volatility,
                                                    dte=dte,
                                                    bid=high_option['bid'],
                                                    ask=high_option['ask'],
-                                                   is_short=contract_type == 'PUT',
+                                                   is_short=contract_type == PUT,
                                                    volatility=volatility)
 
                 low_option_model = OptionContract(price=underlying_price,
@@ -48,7 +50,7 @@ def analyze_credit_spreads(dte_map, contract_type, underlying_price, volatility,
                                                   dte=dte,
                                                   bid=low_option['bid'],
                                                   ask=low_option['ask'],
-                                                  is_short=contract_type == 'CALL',
+                                                  is_short=contract_type == CALL,
                                                   volatility=volatility)
 
                 vertical_model = VerticalSpread(high_leg=high_option_model, low_leg=low_option_model, is_credit=True)
