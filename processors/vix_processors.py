@@ -4,7 +4,7 @@ from constants.contracts import CALL, PUT
 
 def combine_contract_data(calls, puts):
     # Sanity check - DTE should be identical for calls and puts
-    assert(calls.keys() == puts.keys())
+    assert(set(calls.keys()) == set(puts.keys()))
 
     dte_map = {}
 
@@ -13,9 +13,12 @@ def combine_contract_data(calls, puts):
 
         call_strikemap, put_strikemap = calls[dte], puts[dte]
         
-        assert(call_strikemap.keys() == put_strikemap.keys())
         for strike in call_strikemap:
-            dte_map[dte][strike] = {CALL: call_strikemap[strike],
-                                    PUT: put_strikemap[strike]}
+            dte_map[dte].setdefault(strike, {})
+            dte_map[dte][strike][CALL] = call_strikemap[strike]
+        
+        for strike in put_strikemap:
+            dte_map[dte].setdefault(strike, {})
+            dte_map[dte][strike][PUT] = put_strikemap[strike]
     
     return dte_map

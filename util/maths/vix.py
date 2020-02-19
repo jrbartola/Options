@@ -7,6 +7,7 @@ from api.option_chain import get_option_chain
 from processors.vix_processors import combine_contract_data
 from constants.contracts import CALL, PUT
 
+MINUTES_PER_MONTH = 60 * 24 * 30
 MINUTES_PER_YEAR = 60 * 24 * 365
 
 # An option is standard if its dte falls on the third friday of a month
@@ -43,6 +44,9 @@ def smallest_difference(strikemap):
     diff_info = {}
 
     for strike in strikemap:
+        if not (CALL in strikemap[strike] and PUT in strikemap[strike]):
+            continue
+
         call, put = strikemap[strike][CALL], strikemap[strike][PUT]
         call_midpoint = (call['bid'] + call['ask']) / 2
         put_midpoint = (put['bid'] + put['ask']) / 2
@@ -57,8 +61,9 @@ def smallest_difference(strikemap):
 def get_otm_options(k_0, contract_type, strikemap):
     options = []
 
-    strike_filter = lambda s: s > k_0 if contract_type == CALL else lambda s: s < k_0
-    sorted_strikes = filter(strike_filter, sorted(strikemap.keys(), reverse=contract_type == PUT))
+    strike_filter = (lambda s: s > k_0) if contract_type == CALL else (lambda s: s < k_0)
+    contract_filter = lambda s: contract_type in strikemap[s]
+    sorted_strikes = list(filter(lambda s: strike_filter(s) and contract_filter(s), sorted(strikemap.keys())))
 
     seen_zero_bid = False
 
@@ -84,7 +89,7 @@ def merge_k0(k0, strikemap):
 def sigma_squared(t, r, f, k_0, K_i):
     # Create a list of delta k_i's before the loop so we don't have to specify edge cases there
     delta_k_i = [K_i[1]['strikePrice'] - K_i[0]['strikePrice']]
-    delta_k_i.extend([(K_i[i+1] - K_i[i-1]) / 2 for i in range(1, len(K_i) - 1)])
+    delta_k_i.extend([(K_i[i+1]['strikePrice'] - K_i[i-1]['strikePrice']) / 2 for i in range(1, len(K_i) - 1)])
     delta_k_i.extend([K_i[-1]['strikePrice'] - K_i[-2]['strikePrice']])
 
     k_i_sum = sum((delta_k_i[i] / K_i[i]['strikePrice']**2) * np.exp(r*t) * ((K_i[i]['bid'] + K_i[i]['ask']) / 2) for i in range(len(K_i)))
@@ -92,13 +97,22 @@ def sigma_squared(t, r, f, k_0, K_i):
     return (2 / t) * k_i_sum - (1 / t) * (f / k_0 - 1)**2
 
 def vix(symbol):
-    data, _ = get_option_chain(symbol, low_dte=23, high_dte=37)
+    data, _ = get_option_chain(symbol, low_dte=23, high_dte=37, min_volume=0)
     dte_map = combine_contract_data(data[CALL], data[PUT])
 
-    # TODO: Change this loop- we only need two expiration periods
+    # Initialize our variables
+    t1, t2 = None, None
+    sigma1, sigma2 = None, None
+
+
+    # Generalizes to any number of expiration periods
     for dte, strikemap in dte_map.items():
         # Step 0: Find T and R
-        t = T(dte)
+        if t1:
+            t = t2 = T(dte)
+        else:
+            t = t1 = T(dte) 
+
         r = 0.016 # TODO: Find a way to get this dynamically
 
         # Step 1: Find F
@@ -112,7 +126,16 @@ def vix(symbol):
         K_i = get_otm_options(k_0, PUT, strikemap) + [merge_k0(k_0, strikemap)] + get_otm_options(k_0, CALL, strikemap)
 
         # Step 4: Find sigma^2
-        sig_squared = sigma_squared(t, r, f, k_0, K_i)
+        if sigma1:
+            sigma2 = sigma_squared(t, r, f, k_0, K_i)
+        else:
+            sigma1 = sigma_squared(t, r, f, k_0, K_i)
+    
+    # Step 5: Take square root of 30 day weighted average of each sigma squared
+    weighted_avg = (t1 * sigma1 * ((t2 * MINUTES_PER_YEAR - MINUTES_PER_MONTH) / (t2 * MINUTES_PER_YEAR - t1 * MINUTES_PER_YEAR)) + \
+                   t2 * sigma2 * ((MINUTES_PER_MONTH - t1 * MINUTES_PER_YEAR) / (t2 * MINUTES_PER_YEAR - t1 * MINUTES_PER_YEAR))) * (MINUTES_PER_YEAR/MINUTES_PER_MONTH)
+
+    return 100 * (weighted_avg**0.5)
 
 
         
