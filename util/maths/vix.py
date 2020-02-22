@@ -19,7 +19,7 @@ def T(dte):
     current_day_timedelta = datetime.combine(date.today() + timedelta(days=1), time()) - datetime.now()
     M_current_day = current_day_timedelta.seconds // 60
 
-    M_settlement_day = 570 if get_is_standard(dte) else 960
+    M_settlement_day = 510 if get_is_standard(dte) else 900
     M_other_days = 60 * 24 * (dte - 1)
 
     return (M_current_day + M_settlement_day + M_other_days) / MINUTES_PER_YEAR
@@ -96,44 +96,40 @@ def sigma_squared(t, r, f, k_0, K_i):
 
     return (2 / t) * k_i_sum - (1 / t) * (f / k_0 - 1)**2
 
+def get_t_sig_terms(dte, strikemap):
+    # Step 0: Find T and R
+    t = T(dte)
+
+    r = 0.016 # TODO: Find a way to get this dynamically
+
+    # Step 1: Find F
+    smallest_diff_info = smallest_difference(strikemap)
+    f = F(smallest_diff_info['strike'], r, t, smallest_diff_info['call_price'], smallest_diff_info['put_price'])
+    
+    # Step 2: Find K_0
+    k_0 = K_0(f, strikemap)
+
+    # Step 3: Find K_i's
+    K_i = get_otm_options(k_0, PUT, strikemap) + [merge_k0(k_0, strikemap)] + get_otm_options(k_0, CALL, strikemap)
+
+    # Step 4: Find sigma^2
+    sigma_sq = sigma_squared(t, r, f, k_0, K_i)
+
+    return t, sigma_sq
+
 def vix(symbol):
-    data, _ = get_option_chain(symbol, low_dte=23, high_dte=37, min_volume=0)
+    data, _ = get_option_chain(symbol, low_dte=23, high_dte=80, min_volume=0)
     dte_map = combine_contract_data(data[CALL], data[PUT])
 
-    # Initialize our variables
-    t1, t2 = None, None
-    sigma1, sigma2 = None, None
+    close_dte, far_dte = list(dte_map.keys())
 
-
-    # Generalizes to any number of expiration periods
-    for dte, strikemap in dte_map.items():
-        # Step 0: Find T and R
-        if t1:
-            t = t2 = T(dte)
-        else:
-            t = t1 = T(dte) 
-
-        r = 0.016 # TODO: Find a way to get this dynamically
-
-        # Step 1: Find F
-        smallest_diff_info = smallest_difference(strikemap)
-        f = F(smallest_diff_info['strike'], r, t, smallest_diff_info['call_price'], smallest_diff_info['put_price'])
-        
-        # Step 2: Find K_0
-        k_0 = K_0(f, strikemap)
-
-        # Step 3: Find K_i's
-        K_i = get_otm_options(k_0, PUT, strikemap) + [merge_k0(k_0, strikemap)] + get_otm_options(k_0, CALL, strikemap)
-
-        # Step 4: Find sigma^2
-        if sigma1:
-            sigma2 = sigma_squared(t, r, f, k_0, K_i)
-        else:
-            sigma1 = sigma_squared(t, r, f, k_0, K_i)
+    t1, sigma_sq1 = get_t_sig_terms(close_dte, dte_map[close_dte])
+    t2, sigma_sq2 = get_t_sig_terms(far_dte, dte_map[far_dte])
+   
     
     # Step 5: Take square root of 30 day weighted average of each sigma squared
-    weighted_avg = (t1 * sigma1 * ((t2 * MINUTES_PER_YEAR - MINUTES_PER_MONTH) / (t2 * MINUTES_PER_YEAR - t1 * MINUTES_PER_YEAR)) + \
-                   t2 * sigma2 * ((MINUTES_PER_MONTH - t1 * MINUTES_PER_YEAR) / (t2 * MINUTES_PER_YEAR - t1 * MINUTES_PER_YEAR))) * (MINUTES_PER_YEAR/MINUTES_PER_MONTH)
+    weighted_avg = (t1 * sigma_sq1 * ((t2 * MINUTES_PER_YEAR - MINUTES_PER_MONTH) / (t2 * MINUTES_PER_YEAR - t1 * MINUTES_PER_YEAR)) + \
+                   t2 * sigma_sq2 * ((MINUTES_PER_MONTH - t1 * MINUTES_PER_YEAR) / (t2 * MINUTES_PER_YEAR - t1 * MINUTES_PER_YEAR))) * (MINUTES_PER_YEAR/MINUTES_PER_MONTH)
 
     return 100 * (weighted_avg**0.5)
 

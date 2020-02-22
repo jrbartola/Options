@@ -7,8 +7,9 @@ def combine_contract_data(calls, puts):
     assert(set(calls.keys()) == set(puts.keys()))
 
     dte_map = {}
-
-    for dte in calls.keys():
+    
+    # Only consider the next two expiry periods after 23 days
+    for dte in list(calls.keys())[:2]:
         dte_map[dte] = {}
 
         call_strikemap, put_strikemap = calls[dte], puts[dte]
