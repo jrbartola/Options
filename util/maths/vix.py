@@ -121,6 +121,9 @@ def vix(symbol):
     data, _ = get_option_chain(symbol, low_dte=23, high_dte=80, min_volume=0)
     dte_map = combine_contract_data(data[CALL], data[PUT])
 
+    if len(dte_map) == 0:
+        raise ValueError(f'No data was found for symbol {symbol}')
+
     close_dte, far_dte = list(dte_map.keys())
 
     t1, sigma_sq1 = get_t_sig_terms(close_dte, dte_map[close_dte])

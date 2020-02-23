@@ -1,7 +1,7 @@
 from scipy.stats import norm
 
 from constants.contracts import CALL, PUT, CONTRACT_TYPES
-from util.maths import to_dte_volatility
+from util.maths.volatility import to_dte_volatility
 
 
 class OptionContract(object):
