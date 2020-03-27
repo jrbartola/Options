@@ -23,7 +23,7 @@ if __name__ == '__main__':
     symbol = args.symbol
     
     if args.strategy == IRON_CONDOR:
-        find_iron_condors(symbol)
+        print(find_iron_condors(symbol))
     
     elif args.strategy == CREDIT_VERTICAL:
         if not args.contract:
@@ -32,7 +32,7 @@ if __name__ == '__main__':
         if args.contract not in CONTRACT_TYPES:
             raise ValueError(f'Argument `--contract` must be either `CALL` or `PUT`. Got `{args.contract}`')
 
-        find_verticals(symbol, args.contract)
+        print(find_verticals(symbol, args.contract))
 
     else:
         raise ValueError(f'Invalid strategy `{args.strategy}`. See docs for possible values')

@@ -21,4 +21,4 @@ def find_verticals(symbol, contract_type, spread_filter=default_filter):
 
     df = pd.DataFrame(data=spread_data, index=filtered_spreads, columns=['Expected Profit', 'Credit Percentage', 'Probability Profit', 'Max Profit', 'Max Loss'])
     
-    print(df.sort_values(by='Credit Percentage', ascending=False))
+    return df.sort_values(by='Credit Percentage', ascending=False)
