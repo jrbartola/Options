@@ -1,17 +1,18 @@
 
 from api.option_chain import get_option_chain
-from api.quotes import get_price_quote, get_volatility
+from api.quotes import get_price_quote
 
 from constants.transactions import CREDIT, DEBIT
 from constants.contracts import CALL, PUT
 from models.option_contract import OptionContract
 from models.vertical_spread import VerticalSpread
+from util.maths.vix import vix
 
 def process_verticals(symbol, contract_type, credit_or_debit, max_strike_width=50):
     assert(credit_or_debit in {CREDIT, DEBIT})
 
     dte_maps, underlying_price = get_option_chain(symbol)
-    volatility = get_volatility(symbol)
+    volatility = vix(symbol)
 
     if credit_or_debit == CREDIT:
         return process_credit_spreads(dte_maps[contract_type], contract_type, underlying_price, volatility, max_strike_width)
