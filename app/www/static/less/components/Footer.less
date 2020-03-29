@@ -1,0 +1,78 @@
+// Footer
+
+@import '../globals';
+
+.threepanel {
+  margin-top: 50px;
+
+  & > .panel {
+    border-top: solid 1px black;
+  }
+
+  @media @tablet-up {
+    margin-bottom: 20px;
+  }
+
+  @media @desktop-up {
+    margin-top: 75px;
+    margin-bottom: 20px;
+    & > .panel {
+      border-top: none;
+
+      &:nth-child(2) {
+        border-left: solid 1px black;
+        border-right: solid 1px black;
+      }
+    }
+  }
+}
+
+.panel-body {
+  margin-bottom: 16px;
+
+  @media @desktop-up {
+    height: 100%;
+  }
+}
+
+.social-icons {
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  div {
+    &:hover {
+      cursor: pointer;
+      color: grey;
+      transition: color 0.2s ease-out;
+    }
+
+    i {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    a {
+      &:extend(.playfair);
+      font-size: 0.6rem;
+    }
+
+    & > * {
+      display: block;
+    }
+  }
+}
+
+.email-display {
+  text-align: center;
+  font-size: 14px;
+
+  span {
+    &:extend(.playfair);
+
+    a {
+      text-decoration: underline;
+    }
+  }
+}

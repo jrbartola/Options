@@ -1,0 +1,79 @@
+/** Defines the main styles for the website **/
+
+@import 'resets';
+@import 'globals';
+@import 'mixins';
+@import 'margin-padding';
+
+@import 'lib/box/Flex';
+@import 'lib/button/Button';
+@import 'lib/images/Image';
+@import 'lib/box/Section';
+@import 'lib/text/Paragraph';
+@import 'lib/text/Heading';
+@import 'lib/text/BlockQuote';
+@import 'lib/footer/Footer';
+@import 'lib/form/CheckboxGroup';
+
+@import 'components/BlogArticle';
+@import 'components/Header';
+@import 'components/Navbar';
+@import 'components/Footer';
+@import 'components/Sidebar';
+@import 'components/Admin';
+
+// Main body content
+
+#content {
+  margin: 0 10px;
+
+  @media @tablet-up {
+    margin: 0 30px;
+  }
+
+  @media @desktop-up {
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+}
+
+.main-content {
+  border-bottom: solid 1px black;
+
+  @media @small-desktop-up {
+    border-bottom: none;
+    border-right: solid 1px black;
+  }
+}
+
+// Home View
+
+#home {
+  margin: 15px;
+
+  @media @tablet-up {
+    margin: 20px;
+  }
+}
+
+.home-picture {
+  margin: 0;
+
+  text-align: center;
+
+  img {
+    width: 100%;
+  }
+
+  @media @tablet-up {
+    margin: 100px;
+  }
+}
+
+// Blogs View
+
+#blogs,
+#empower,
+#consulting {
+  margin: 20px 0;
+}

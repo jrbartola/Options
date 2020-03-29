@@ -1,0 +1,46 @@
+/** Define global variables and classes for the entire site **/
+
+// Global Variables
+
+@desktop-up: (min-width: 992px);
+@small-desktop-up: (min-width: 768px);
+@tablet-up: (min-width: 481px);
+
+@grey-text: #6c757d;
+@medium-grey: #e6e6e6;
+
+html {
+  font-size: 20px;
+
+  @media @tablet-up {
+    font-size: 18px;
+  }
+
+  @media @desktop-up {
+    font-size: 22px;
+  }
+}
+
+// Font Families
+
+// TBD
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}

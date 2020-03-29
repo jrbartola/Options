@@ -1,0 +1,4 @@
+export default {
+  IRON_CONDOR: 'IRON_CONDOR',
+  VERTICAL_CREDIT: 'VERTICAL_CREDIT'
+};
