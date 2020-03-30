@@ -3,18 +3,6 @@ import * as React from 'react';
 import CanvasJSReact from '../../js/canvasjs.react';
 
 const RiskGraph = () => {
-  const generateDataPoints = noOfDps => {
-    var xVal = 1,
-      yVal = 100;
-    var dps = [];
-    for (var i = 0; i < noOfDps; i++) {
-      yVal = yVal + Math.round(5 + Math.random() * (-5 - 5));
-      dps.push({ x: xVal, y: yVal });
-      xVal++;
-    }
-    return dps;
-  };
-
   return (
     <CanvasJSReact.CanvasJSChart
       options={{
@@ -22,15 +10,22 @@ const RiskGraph = () => {
         animationEnabled: true,
         zoomEnabled: true,
         title: {
-          text: 'Try Zooming and Panning'
+          text: 'Iron Condor SPY 4/17'
         },
         axisY: {
           includeZero: false
         },
         data: [
           {
-            type: 'area',
-            dataPoints: generateDataPoints(500)
+            type: 'line',
+            dataPoints: [
+              { x: 115, y: -250 },
+              { x: 120, y: 0 },
+              { x: 125, y: 250 },
+              { x: 130, y: 250 },
+              { x: 135, y: 0 },
+              { x: 140, y: -250 }
+            ]
           }
         ]
       }}
