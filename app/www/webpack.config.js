@@ -13,6 +13,21 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.jsx?$/,
+                use: [{
+                    loader: "babel-loader",
+                    options: {
+                        presets: [
+                            "@babel/preset-env",
+                            "@babel/preset-react"
+                        ],
+                        plugins: [
+                            "@babel/plugin-proposal-class-properties"
+                        ]
+                    }
+                }]
+            },
+            {
                 test: /\.tsx?$/,
                 use: ['ts-loader']
             },
