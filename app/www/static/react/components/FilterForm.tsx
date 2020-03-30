@@ -1,48 +1,55 @@
 import * as React from 'react';
-import {
-  Grid,
-  Select,
-  FormControl,
-  MenuItem,
-  InputLabel
-} from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 
+import FilterRow from './FilterRow';
 import { useGlobalStyles } from '../styles/globalStyles';
-import { keyToAlias } from '../utils/stringUtils';
-import FilterTypes from '../constants/FilterTypes';
+import SearchFilter from '../models/SearchFilter';
 
-const FilterForm = ({formFields, setFormFields}) => {
+const FilterForm = ({ formFields, setFormFields }) => {
   const globalClasses = useGlobalStyles();
-  const {filters} = formFields;
+  const { filters } = formFields;
+
+  const makeUpdateFilter = index => (field, value) => {
+    setFormFields(fields => ({
+      ...fields,
+      filters: filters.set(index, filters.get(index).set(field, value))
+    }));
+  };
+
+  const addFilter = () => {
+    setFormFields(fields => ({
+      ...fields,
+      filters: filters.push(SearchFilter.empty())
+    }));
+  };
+
+  const deleteFilter = index => {
+    setFormFields(fields => ({
+      ...fields,
+      filters: filters.delete(index)
+    }));
+  };
 
   return (
-    <Grid item container xs={12}>
-      <Grid item xs={4}>
-        <FormControl
+    <Grid item container xs={12} spacing={1}>
+      {filters.map((filter, i) => (
+        <FilterRow
+          key={i}
+          filter={filter}
+          updateFilter={makeUpdateFilter(i)}
+          onDelete={() => deleteFilter(i)}
+          canDelete={i > 0}
+        />
+      ))}
+      <Grid item xs={12} className={globalClasses.textCenter}>
+        <Button
           variant="outlined"
-          margin="dense"
-          classes={{ root: globalClasses.noTopMargin }}
-          className={globalClasses.fullWidth}
+          size="small"
+          color="primary"
+          onClick={addFilter}
         >
-          <InputLabel id="strategy-label">Strategy</InputLabel>
-          <Select
-            labelId="strategy-label"
-            label="Strategy"
-            value={selectedStrategy}
-            onChange={({ target: { value } }) =>
-              setFormFields(fields => ({
-                ...fields,
-                filters: 
-              }))
-            }
-          >
-            {Object.keys(FilterTypes).map(filterType => (
-              <MenuItem key={filterType} value={filterType}>
-                {keyToAlias(filterType)}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          Add Filter
+        </Button>
       </Grid>
     </Grid>
   );

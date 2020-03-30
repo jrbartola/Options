@@ -7,9 +7,19 @@ export const useGlobalStyles = makeStyles(theme => ({
     marginBottom: 0
   },
   fullWidth: {
-    minWidth: '100%'
+    minWidth: '100%',
+    maxWidth: '100%'
+  },
+  fieldText: {
+    fontSize: 16
   },
   noTopMargin: {
     marginTop: 0
+  },
+  textCenter: {
+    textAlign: 'center'
+  },
+  relative: {
+    position: 'relative'
   }
 }));

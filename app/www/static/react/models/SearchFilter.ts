@@ -1,9 +1,9 @@
 import { Record } from 'immutable';
 
 const defaults = {
-  filterType: null,
-  comparisonOp: null,
-  filterValue: null
+  filterType: '',
+  comparisonOp: '',
+  filterValue: ''
 };
 
 class SearchFilter extends Record(defaults) {

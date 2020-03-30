@@ -22,6 +22,9 @@ import { useGlobalStyles } from '../styles/globalStyles';
 const useStyles = makeStyles(theme => ({
   form: {
     margin: theme.spacing(1)
+  },
+  bottomMargin: {
+    marginBottom: theme.spacing(2)
   }
 }));
 
@@ -32,7 +35,7 @@ const SearchForm = ({ formFields, setFormFields }) => {
   const { symbol, selectedStrategy, optionType } = formFields;
 
   const handleSymbolChange = ({ target: { value } }) => {
-    // Only accept alphanumerical cha
+    // Only accept alphanumerical characters
     if (!/^[A-Za-z0-9\/]*$/g.test(value)) {
       return;
     }
@@ -49,7 +52,7 @@ const SearchForm = ({ formFields, setFormFields }) => {
 
   return (
     <form className={classes.form} noValidate autoComplete="off">
-      <Grid container spacing={1}>
+      <Grid container spacing={1} className={classes.bottomMargin}>
         <Grid item xs={12} md={4}>
           <TextField
             size="small"
@@ -89,12 +92,7 @@ const SearchForm = ({ formFields, setFormFields }) => {
       </Grid>
       <Grid item xs={12} md={6}>
         <FormControl component="fieldset">
-          <FormLabel
-            component="legend"
-            classes={{ root: globalClasses.formLabel }}
-          >
-            Type
-          </FormLabel>
+          <FormLabel component="legend">Type</FormLabel>
           <RadioGroup
             aria-label="option-type"
             name="option-type"
