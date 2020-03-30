@@ -32,7 +32,6 @@ const FilterRow = ({ filter, updateFilter, canDelete, onDelete }) => {
             labelId="filter-label"
             label="Filter"
             value={filter.filterType}
-            // classes={{ root: globalClasses.formLabel }}
             onChange={({ target: { value } }) =>
               updateFilter('filterType', value)
             }
@@ -45,7 +44,7 @@ const FilterRow = ({ filter, updateFilter, canDelete, onDelete }) => {
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={2}>
         <FormControl
           variant="outlined"
           margin="dense"
@@ -78,11 +77,11 @@ const FilterRow = ({ filter, updateFilter, canDelete, onDelete }) => {
         />
       </Grid>
       {canDelete && (
-        <div className={globalClasses.relative}>
+        <Grid item xs={1}>
           <IconButton aria-label="delete" onClick={onDelete}>
             <DeleteIcon fontSize="small" />
           </IconButton>
-        </div>
+        </Grid>
       )}
     </React.Fragment>
   );
