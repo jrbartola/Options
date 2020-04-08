@@ -12,9 +12,9 @@ default_filter = SpreadFilter().add_criteria(credit_percentage_gt(0.3)) \
                                .add_criteria(prob_profit_gt(0.5)) \
                                .add_criteria(expected_profit_gt(0.0))
 
-def find_iron_condors(symbol, spread_filter=default_filter):
-    call_data = process_verticals(symbol, CALL, CREDIT, max_strike_width=10)
-    put_data = process_verticals(symbol, PUT, CREDIT, max_strike_width=10)
+def find_iron_condors(symbol, max_strike_width=10, spread_filter=default_filter, **kwargs):
+    call_data = process_verticals(symbol, CALL, CREDIT, max_strike_width=max_strike_width, **kwargs)
+    put_data = process_verticals(symbol, PUT, CREDIT, max_strike_width=max_strike_width, **kwargs)
     call_spreads = []
     put_spreads = []
     iron_condors = []

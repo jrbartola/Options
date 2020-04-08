@@ -8,10 +8,10 @@ from models.option_contract import OptionContract
 from models.vertical_spread import VerticalSpread
 from util.maths.vix import vix
 
-def process_verticals(symbol, contract_type, credit_or_debit, max_strike_width=50):
+def process_verticals(symbol, contract_type, credit_or_debit, max_strike_width, **kwargs):
     assert(credit_or_debit in {CREDIT, DEBIT})
 
-    dte_maps, underlying_price = get_option_chain(symbol)
+    dte_maps, underlying_price = get_option_chain(symbol, **kwargs)
     volatility = vix(symbol)
 
     if credit_or_debit == CREDIT:
