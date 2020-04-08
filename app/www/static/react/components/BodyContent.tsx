@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 import SearchCard from './SearchCard';
 import RiskGraph from './RiskGraph';
+import { withContext } from './hocs/withContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,4 +30,4 @@ const BodyContent = () => {
   );
 };
 
-export default BodyContent;
+export default withContext(BodyContent);

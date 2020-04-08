@@ -1,8 +1,15 @@
 import * as React from 'react';
-
 import CanvasJSReact from '../../js/canvasjs.react';
 
+import { useDashboardContext } from '../context';
+
 const RiskGraph = () => {
+  const [
+    {
+      graph: { dataPoints }
+    }
+  ] = useDashboardContext();
+
   return (
     <CanvasJSReact.CanvasJSChart
       options={{
@@ -18,14 +25,7 @@ const RiskGraph = () => {
         data: [
           {
             type: 'line',
-            dataPoints: [
-              { x: 115, y: -250 },
-              { x: 120, y: 0 },
-              { x: 125, y: 250 },
-              { x: 130, y: 250 },
-              { x: 135, y: 0 },
-              { x: 140, y: -250 }
-            ]
+            dataPoints
           }
         ]
       }}
