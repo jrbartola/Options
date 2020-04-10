@@ -1,11 +1,11 @@
 import pandas as pd
 
-from trades.filters.common_filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt
-from processors.vertical_processors import process_verticals
+from options.trades.filters.common_filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt
+from options.processors.vertical_processors import process_verticals
 
-from constants.transactions import CREDIT
-from models.spread_filter import SpreadFilter
-from models.option_contract import OptionContract
+from options.constants.transactions import CREDIT
+from options.models.spread_filter import SpreadFilter
+from options.models.option_contract import OptionContract
 
 default_filter = SpreadFilter().add_criteria(lambda spread: spread.has_fair_pricing())
 

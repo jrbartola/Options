@@ -1,11 +1,11 @@
 import argparse
 
-from trades.iron_condor_finder import find_iron_condors
-from trades.vertical_finder import find_verticals
+from options.trades.iron_condor_finder import find_iron_condors
+from options.trades.vertical_finder import find_verticals
 
-from settings import update_df_display_settings
-from constants.contracts import CONTRACT_TYPES
-from constants.strategies import IRON_CONDOR, CREDIT_VERTICAL
+from options.cli.settings import update_df_display_settings
+from options.constants.contracts import CONTRACT_TYPES
+from options.constants.strategies import IRON_CONDOR, CREDIT_VERTICAL
 
 def get_arguments():
     parser = argparse.ArgumentParser(description='Find options trades.')

@@ -1,4 +1,4 @@
-from models.spread import Spread
+from options.models.spread import Spread
 
 class IronCondor(Spread):
     def __init__(self, symbol, call_spread, put_spread, dte):

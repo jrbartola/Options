@@ -1,6 +1,6 @@
 import numpy as np
 
-from api.client import c
+from options.api.client import c
 
 
 def get_price_quote(symbol):

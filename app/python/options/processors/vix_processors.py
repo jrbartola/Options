@@ -1,6 +1,6 @@
 # Preprocesses some data to set up for VIX calculations: http://www.cboe.com/micro/vix/vixwhite.pdf
 
-from constants.contracts import CALL, PUT
+from options.constants.contracts import CALL, PUT
 
 def combine_contract_data(calls, puts):
     # Sanity check - DTE should be identical for calls and puts
