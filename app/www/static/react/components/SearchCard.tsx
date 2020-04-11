@@ -34,7 +34,8 @@ const SearchCard = () => {
     symbol: '',
     selectedStrategy: '',
     optionType: null,
-    filters: List([SearchFilter.empty()])
+    filters: List([SearchFilter.empty()]),
+    dte: [30, 45]
   });
 
   return (

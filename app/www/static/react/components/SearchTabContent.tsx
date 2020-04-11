@@ -4,7 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
 import SearchCard from './SearchCard';
-import RiskGraph from './RiskGraph';
+import SearchTable from './SearchTable';
+
 import { withContext } from './hocs/withContext';
 
 const useStyles = makeStyles(theme => ({
@@ -13,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BodyContent = () => {
+const SearchTabContent = () => {
   const classes = useStyles();
 
   return (
@@ -23,11 +24,11 @@ const BodyContent = () => {
           <SearchCard />
         </Grid>
         <Grid item xs={12} md={8}>
-          <RiskGraph />
+          <SearchTable />
         </Grid>
       </Grid>
     </section>
   );
 };
 
-export default withContext(BodyContent);
+export default withContext(SearchTabContent);

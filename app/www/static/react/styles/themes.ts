@@ -1,49 +1,68 @@
 import { createMuiTheme } from '@material-ui/core';
 
-const desktopFontSize = 18;
-
-export const desktopTheme = createMuiTheme({
-  overrides: {
-    // Name of the component
-    MuiInputBase: {
-      formControl: { fontSize: desktopFontSize }
-    },
-    MuiFormLabel: { root: { fontSize: 16, marginTop: 2 } },
-    MuiFormControlLabel: {
-      root: { fontSize: 16 },
-      label: { fontSize: desktopFontSize }
-    },
-    MuiSvgIcon: { fontSizeSmall: { fontSize: 20 } },
-    MuiSelect: {
-      outlined: { paddingRight: '24px !important' },
-      iconOutlined: { right: 4, fontSize: 24 }
-    },
-    MuiMenuItem: {
-      root: { fontSize: desktopFontSize }
-    }
+const baseTheme = createMuiTheme({
+  palette: {
+    primary: { light: '#09a0dc', main: '#05668D' },
+    secondary: { light: '#02C39A', main: '#00A896' }
   }
 });
+
+const desktopFontSize = 18;
+
+export const desktopTheme = createMuiTheme(
+  {
+    overrides: {
+      // Name of the component
+      MuiInputBase: {
+        formControl: { fontSize: desktopFontSize }
+      },
+      MuiFormLabel: { root: { fontSize: 16, marginTop: 2 } },
+      MuiFormControlLabel: {
+        root: { fontSize: 16 },
+        label: { fontSize: desktopFontSize }
+      },
+      MuiSvgIcon: { fontSizeSmall: { fontSize: 20 } },
+      MuiSelect: {
+        outlined: { paddingRight: '24px !important' },
+        iconOutlined: { right: 4, fontSize: 24 }
+      },
+      MuiMenuItem: {
+        root: { fontSize: desktopFontSize }
+      },
+      MuiSlider: {
+        markLabel: { fontSize: desktopFontSize }
+      }
+    }
+  },
+  baseTheme
+);
 
 const mobileFontSize = 12;
 
-export const mobileTheme = createMuiTheme({
-  overrides: {
-    // Name of the component
-    MuiInputBase: {
-      formControl: { fontSize: mobileFontSize }
-    },
-    MuiFormLabel: { root: { fontSize: mobileFontSize, marginTop: 0 } },
-    MuiFormControlLabel: {
-      root: { fontSize: mobileFontSize },
-      label: { fontSize: mobileFontSize }
-    },
-    MuiSvgIcon: { fontSizeSmall: { fontSize: 20 } },
-    MuiSelect: {
-      outlined: { paddingRight: '24px !important' },
-      iconOutlined: { right: 4, fontSize: 24 }
-    },
-    MuiMenuItem: {
-      root: { fontSize: mobileFontSize }
+export const mobileTheme = createMuiTheme(
+  {
+    overrides: {
+      // Name of the component
+      MuiInputBase: {
+        formControl: { fontSize: mobileFontSize }
+      },
+      MuiFormLabel: { root: { fontSize: mobileFontSize, marginTop: 0 } },
+      MuiFormControlLabel: {
+        root: { fontSize: mobileFontSize },
+        label: { fontSize: mobileFontSize }
+      },
+      MuiSvgIcon: { fontSizeSmall: { fontSize: 20 } },
+      MuiSelect: {
+        outlined: { paddingRight: '24px !important' },
+        iconOutlined: { right: 4, fontSize: 24 }
+      },
+      MuiMenuItem: {
+        root: { fontSize: mobileFontSize }
+      },
+      MuiSlider: {
+        markLabel: { fontSize: mobileFontSize }
+      }
     }
-  }
-});
+  },
+  baseTheme
+);

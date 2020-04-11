@@ -10,7 +10,8 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  FormLabel
+  FormLabel,
+  Slider
 } from '@material-ui/core';
 
 import StrategyTypes from '../constants/StrategyTypes';
@@ -32,7 +33,7 @@ const SearchForm = ({ formFields, setFormFields }) => {
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
 
-  const { symbol, selectedStrategy, optionType } = formFields;
+  const { symbol, selectedStrategy, optionType, dte } = formFields;
 
   const handleSymbolChange = ({ target: { value } }) => {
     // Only accept alphanumerical characters
@@ -89,32 +90,48 @@ const SearchForm = ({ formFields, setFormFields }) => {
             </Select>
           </FormControl>
         </Grid>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Type</FormLabel>
-          <RadioGroup
-            aria-label="option-type"
-            name="option-type"
-            value={optionType}
-            onChange={handleTypeChange}
-            row
-          >
-            {Object.keys(OptionTypes).map(optionType => (
-              <FormControlLabel
-                key={optionType}
-                value={optionType}
-                control={
-                  <Radio
-                    size="small"
-                    disabled={selectedStrategy === StrategyTypes.IRON_CONDOR}
-                  />
-                }
-                label={keyToAlias(optionType)}
-              />
-            ))}
-          </RadioGroup>
-        </FormControl>
+        <Grid item xs={12} md={6}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Type</FormLabel>
+            <RadioGroup
+              aria-label="option-type"
+              name="option-type"
+              value={optionType}
+              onChange={handleTypeChange}
+              row
+            >
+              {Object.keys(OptionTypes).map(optionType => (
+                <FormControlLabel
+                  key={optionType}
+                  value={optionType}
+                  control={
+                    <Radio
+                      size="small"
+                      disabled={selectedStrategy === StrategyTypes.IRON_CONDOR}
+                    />
+                  }
+                  label={keyToAlias(optionType)}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <FormControl component="fieldset" className={globalClasses.fullWidth}>
+            <FormLabel component="legend">Days to Expiration</FormLabel>
+            <Slider
+              value={dte}
+              onChange={(_, value) =>
+                setFormFields(fields => ({ ...fields, dte: value }))
+              }
+              step={1}
+              min={1}
+              max={60}
+              marks={[1, 30, 45, 60].map(i => ({ value: i, label: i }))}
+              valueLabelDisplay="auto"
+            />
+          </FormControl>
+        </Grid>
       </Grid>
       <FilterForm formFields={formFields} setFormFields={setFormFields} />
     </form>

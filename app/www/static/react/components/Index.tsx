@@ -4,8 +4,8 @@ import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { ThemeProvider } from '@material-ui/core';
 
 import { desktopTheme, mobileTheme } from '../styles/themes';
-import BodyContent from './BodyContent';
 import Navbar from './Navbar';
+import TabContainer from './TabContainer';
 
 const Index = ({ width }) => {
   const isDesktop = isWidthUp('sm', width);
@@ -15,7 +15,7 @@ const Index = ({ width }) => {
       <div>
         <Navbar />
         <Container maxWidth="xl">
-          <BodyContent />
+          <TabContainer />
         </Container>
       </div>
     </ThemeProvider>
