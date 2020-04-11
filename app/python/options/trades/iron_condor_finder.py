@@ -1,18 +1,15 @@
 import pandas as pd
+from functools import reduce
 
-from trades.filters.common_filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt
-from processors.vertical_processors import process_verticals
+from options.trades.filters.common_filters import prob_profit_gt, expected_profit_gt, credit_percentage_gt
+from options.processors.vertical_processors import process_verticals
 
-from constants.transactions import CREDIT
-from constants.contracts import CALL, PUT
-from models.spread_filter import SpreadFilter
-from models.iron_condor import IronCondor
+from options.constants.transactions import CREDIT
+from options.constants.contracts import CALL, PUT
+from options.models.spread_filter import SpreadFilter
+from options.models.iron_condor import IronCondor
 
-default_filter = SpreadFilter().add_criteria(credit_percentage_gt(0.3)) \
-                               .add_criteria(prob_profit_gt(0.5)) \
-                               .add_criteria(expected_profit_gt(0.0))
-
-def find_iron_condors(symbol, spread_filter=default_filter, **kwargs):
+def find_iron_condors(symbol, spread_filters=[], **kwargs):
     call_data = process_verticals(symbol, CALL, CREDIT, **kwargs)
     put_data = process_verticals(symbol, PUT, CREDIT, **kwargs)
     call_spreads = []
@@ -34,7 +31,7 @@ def find_iron_condors(symbol, spread_filter=default_filter, **kwargs):
 
             iron_condors.append(IronCondor(symbol, call_spread, put_spread, dte=call_spread.dte))
 
-    filtered_spreads = spread_filter.get_filtered(iron_condors)
+    filtered_spreads = reduce(lambda spreads, spread_filter: spread_filter.filter(spreads), spread_filters, iron_condors)
     spread_data = [[spread.expected_profit() * 100, spread.credit_percentage, spread.prob_profit(), spread.max_profit, spread.max_loss] for spread in filtered_spreads]
 
     df = pd.DataFrame(data=spread_data, index=filtered_spreads, columns=['Expected Profit', 'Credit Percentage', 'Probability Profit', 'Max Profit', 'Max Loss'])
