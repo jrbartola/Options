@@ -31,9 +31,9 @@ def find_iron_condors(symbol, spread_filters=[], **kwargs):
 
             iron_condors.append(IronCondor(symbol, call_spread, put_spread, dte=call_spread.dte))
 
-    filtered_spreads = reduce(lambda spreads, spread_filter: spread_filter.filter(spreads), spread_filters, iron_condors)
+    filtered_spreads = reduce(lambda spreads, spread_filter: [spread for spread in spreads if spread_filter.filter(spread)], spread_filters, iron_condors)
     spread_data = [[spread.expected_profit() * 100, spread.credit_percentage, spread.prob_profit(), spread.max_profit, spread.max_loss] for spread in filtered_spreads]
 
-    df = pd.DataFrame(data=spread_data, index=filtered_spreads, columns=['Expected Profit', 'Credit Percentage', 'Probability Profit', 'Max Profit', 'Max Loss'])
+    df = pd.DataFrame(data=spread_data, index=[repr(s) for s in filtered_spreads], columns=['Expected Profit', 'Credit Percentage', 'Probability Profit', 'Max Profit', 'Max Loss'])
     
     return df.sort_values(by='Credit Percentage', ascending=False)

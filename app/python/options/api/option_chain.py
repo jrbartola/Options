@@ -5,7 +5,7 @@ from options.constants.contracts import CALL, PUT
 from options.util.mappers import map_option_chain
 from options.api.client import c
 
-def get_option_chain(symbol, low_dte=30, high_dte=45, min_volume=50):
+def get_option_chain(symbol, low_dte=30, high_dte=45, min_volume=50, **kwargs):
     from_date = (datetime.now() + timedelta(days=low_dte)).isoformat()
     to_date = (datetime.now() + timedelta(days=high_dte)).isoformat()
 

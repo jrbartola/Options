@@ -21,5 +21,8 @@ export const useGlobalStyles = makeStyles(theme => ({
   },
   relative: {
     position: 'relative'
+  },
+  pointer: {
+    cursor: 'pointer'
   }
 }));

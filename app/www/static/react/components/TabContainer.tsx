@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tabs, Tab, Paper, makeStyles } from '@material-ui/core';
 import SearchTabContent from './SearchTabContent';
+import AnalyzeTabContent from './AnalyzeTabContent';
 
 const TabContainer = () => {
   const [tabIndex, setTabIndex] = React.useState(0);
@@ -19,6 +20,7 @@ const TabContainer = () => {
         </Tabs>
       </Paper>
       {tabIndex === 0 && <SearchTabContent />}
+      {tabIndex === 1 && <AnalyzeTabContent />}
     </>
   );
 };

@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 
 import SearchForm from './SearchForm';
 import SearchFilter from '../models/SearchFilter';
+import { useDashboardContext } from '../store/Context';
+import { searchStrategy } from '../store/Actions';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -30,6 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const SearchCard = () => {
   const classes = useStyles();
+  const [, dispatch] = useDashboardContext();
   const [formFields, setFormFields] = React.useState({
     symbol: '',
     selectedStrategy: '',
@@ -37,6 +40,22 @@ const SearchCard = () => {
     filters: List([SearchFilter.empty()]),
     dte: [30, 45]
   });
+
+  const handleSearch = () => {
+    if (formFields.filters.some(_ => _.isEmpty)) {
+      //TODO
+      alert('must fill out all filters');
+      return;
+    }
+
+    searchStrategy(dispatch, {
+      strategyType: formFields.selectedStrategy,
+      symbol: formFields.symbol,
+      lowDte: formFields.dte[0],
+      highDte: formFields.dte[1],
+      filters: formFields.filters.map(_ => _.toJS())
+    });
+  };
 
   return (
     <Card className={classes.card} variant="outlined">
@@ -47,7 +66,12 @@ const SearchCard = () => {
         <SearchForm formFields={formFields} setFormFields={setFormFields} />
       </CardContent>
       <CardActions>
-        <Button variant="contained" size="small" color="primary">
+        <Button
+          variant="contained"
+          size="small"
+          color="primary"
+          onClick={handleSearch}
+        >
           Search
         </Button>
       </CardActions>

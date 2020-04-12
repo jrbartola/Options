@@ -46,18 +46,17 @@ export const makeRequestActions = ({ REQUEST, RECEIVE, FAILURE, RESET }) => {
 };
 
 export const fetchMakerBuilder = ({ requestActions, fetch }) => (
+  dispatch,
   argObj,
   payload = {}
 ) => {
-  return dispatch => {
-    dispatch(requestActions.request({ payload }));
-    fetch(argObj).then(
-      resp => {
-        dispatch(requestActions.receive({ data: resp, payload }));
-      },
-      err => {
-        dispatch(requestActions.failure({ error: err, payload }));
-      }
-    );
-  };
+  dispatch(requestActions.request({ payload }));
+  fetch(argObj).then(
+    resp => {
+      dispatch(requestActions.receive({ data: resp, payload }));
+    },
+    err => {
+      dispatch(requestActions.failure({ error: err, payload }));
+    }
+  );
 };

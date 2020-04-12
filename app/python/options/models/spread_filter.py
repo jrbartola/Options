@@ -5,7 +5,7 @@ class SpreadFilter(object):
     def __init__(self, filter_type, comparison_op, filter_value):
         self.filter_type = filter_type
         self.comparison_op = comparison_op
-        self.filter_value = filter_value
+        self.filter_value = float(filter_value)
     
     def filter(self, spread):
         actual_value = None

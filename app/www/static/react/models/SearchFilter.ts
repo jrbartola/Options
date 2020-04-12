@@ -10,6 +10,14 @@ class SearchFilter extends Record(defaults) {
   static empty() {
     return new SearchFilter();
   }
+
+  get isEmpty() {
+    return (
+      this.filterType === '' ||
+      this.comparisonOp === '' ||
+      this.filterValue === ''
+    );
+  }
 }
 
 export default SearchFilter;

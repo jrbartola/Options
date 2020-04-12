@@ -6,37 +6,41 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Table
+  Table,
+  TableCellProps
 } from '@material-ui/core';
-import { useDashboardContext } from '../context';
+import { useDashboardContext } from '../store/Context';
+import { useGlobalStyles } from '../styles/globalStyles';
+import TableColumns from '../constants/TableColumns';
 
 const SearchTable = () => {
-  const [{ searchResults }] = useDashboardContext();
+  const globalClasses = useGlobalStyles();
+  const [
+    {
+      searchResults: { strategyType, results }
+    }
+  ] = useDashboardContext();
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Spread</TableCell>
-            <TableCell align="right">Max Profit</TableCell>
-            <TableCell align="right">Max Loss</TableCell>
-            <TableCell align="right">Probability Profit</TableCell>
-            <TableCell align="right">Expected Profit</TableCell>
-            <TableCell align="right">Credit Percent</TableCell>
+            {TableColumns[strategyType].map((column, i) => (
+              <TableCell key={i} {...(column.headerProps as TableCellProps)}>
+                {column.label}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {searchResults.map(row => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                {row.description}
-              </TableCell>
-              <TableCell align="right">{row.maxProfit}</TableCell>
-              <TableCell align="right">{row.maxLoss}</TableCell>
-              <TableCell align="right">{row.probProfit}</TableCell>
-              <TableCell align="right">{row.expectedProfit}</TableCell>
-              <TableCell align="right">{row.creditPercent}</TableCell>
+          {results.map((spread, i) => (
+            <TableRow key={i} hover className={globalClasses.pointer}>
+              {TableColumns[strategyType].map((column, j) => (
+                <TableCell key={j} {...(column.bodyProps as TableCellProps)}>
+                  {column.getValue(spread)}
+                </TableCell>
+              ))}
             </TableRow>
           ))}
         </TableBody>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import CanvasJSReact from '../../js/canvasjs.react';
 
-import { useDashboardContext } from '../context';
+import { useDashboardContext } from '../store/Context';
 
 const RiskGraph = () => {
   const [

@@ -12,8 +12,8 @@ def search_strategy(strategy_type):
 
     symbol = request.args.get('symbol')
     filters = request.json.get('filters')
-    low_dte = request.json.get('low_dte')
-    high_dte = request.json.get('high_dte')
+    low_dte = request.json.get('lowDte')
+    high_dte = request.json.get('highDte')
     volatility = request.json.get('volatility')
 
     if strategy_type not in [IRON_CONDOR, CREDIT_VERTICAL]:
@@ -26,8 +26,8 @@ def search_strategy(strategy_type):
         raise BadRequest('Missing expected body parameter `filters`', missing_value='filters')
 
     
-    spread_filters = [SpreadFilter(filter.filter_type, filter.comparison_op, filter.filter_value) for filter in filters] 
+    spread_filters = [SpreadFilter(filter['filterType'], filter['comparisonOp'], filter['filterValue']) for filter in filters] 
 
-    results = find_iron_condors(symbol, symbol=symbol, spread_filters=spread_filters, low_dte=low_dte, high_dte=high_dte, volatility=volatility)
+    results = find_iron_condors(symbol, spread_filters=spread_filters, low_dte=low_dte, high_dte=high_dte, volatility=volatility)
 
-    return jsonify(results)
+    return results.to_json(orient='index')
