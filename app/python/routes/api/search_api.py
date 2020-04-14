@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, request, jsonify, abort
+from flask import Blueprint, render_template, request, jsonify, abort, make_response
+from werkzeug.exceptions import HTTPException
+import traceback
+import json
 
 from routes.api.exceptions.bad_request import BadRequest
 from options.trades.iron_condor_finder import find_iron_condors
@@ -30,4 +33,23 @@ def search_strategy(strategy_type):
 
     results = find_iron_condors(symbol, spread_filters=spread_filters, low_dte=low_dte, high_dte=high_dte, volatility=volatility)
 
-    return results.to_json(orient='index')
+    # Parse results
+    merged = {'results': json.loads(results.to_json(orient='index')), 'strategyType': strategy_type}
+    return jsonify(merged)
+
+
+# 400 handler
+@search_api.errorhandler(BadRequest)
+def handle_bad_request(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+# 500+ errors/generic catchall
+@search_api.errorhandler(Exception)
+def handle_server_error(e):
+    error = {
+        "message": str(e),
+        "trace": traceback.format_exc()
+    }
+    return make_response(jsonify(error), 500)

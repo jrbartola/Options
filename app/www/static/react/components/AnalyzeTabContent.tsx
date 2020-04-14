@@ -5,8 +5,6 @@ import Grid from '@material-ui/core/Grid';
 
 import RiskGraph from './RiskGraph';
 
-import { withContext } from './hocs/withContext';
-
 const useStyles = makeStyles(theme => ({
   root: {
     margin: theme.spacing(2)
@@ -25,4 +23,4 @@ const AnalyzeTabContent = () => {
   );
 };
 
-export default withContext(AnalyzeTabContent);
+export default AnalyzeTabContent;

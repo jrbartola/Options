@@ -7,19 +7,41 @@ import {
   TableCell,
   TableBody,
   Table,
-  TableCellProps
+  TableCellProps,
+  Typography,
+  Grid
 } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
+
 import { useDashboardContext } from '../store/Context';
 import { useGlobalStyles } from '../styles/globalStyles';
 import TableColumns from '../constants/TableColumns';
 
 const SearchTable = () => {
   const globalClasses = useGlobalStyles();
-  const [
-    {
-      searchResults: { strategyType, results }
-    }
-  ] = useDashboardContext();
+  const [{ searchResults }] = useDashboardContext();
+  const strategyType = searchResults.get('strategyType');
+  const results = searchResults.get('results');
+
+  // Empty state
+  if (results.size === 0) {
+    return (
+      <Grid
+        container
+        className={globalClasses.fullHeight}
+        justify="center"
+        alignItems="center"
+        direction="column"
+      >
+        <Grid item>
+          <SearchIcon />
+        </Grid>
+        <Grid item>
+          <Typography>Perform a search to analyze the results</Typography>
+        </Grid>
+      </Grid>
+    );
+  }
 
   return (
     <TableContainer component={Paper}>

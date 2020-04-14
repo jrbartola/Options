@@ -10,6 +10,9 @@ export const useGlobalStyles = makeStyles(theme => ({
     minWidth: '100%',
     maxWidth: '100%'
   },
+  fullHeight: {
+    height: '100%'
+  },
   fieldText: {
     fontSize: 16
   },

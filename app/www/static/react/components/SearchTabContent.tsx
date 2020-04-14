@@ -6,8 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import SearchCard from './SearchCard';
 import SearchTable from './SearchTable';
 
-import { withContext } from './hocs/withContext';
-
 const useStyles = makeStyles(theme => ({
   root: {
     margin: theme.spacing(2)
@@ -31,4 +29,4 @@ const SearchTabContent = () => {
   );
 };
 
-export default withContext(SearchTabContent);
+export default SearchTabContent;

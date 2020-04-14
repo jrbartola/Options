@@ -3,9 +3,11 @@ import Container from '@material-ui/core/Container';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { ThemeProvider } from '@material-ui/core';
 
+import { withContext } from './hocs/withContext';
 import { desktopTheme, mobileTheme } from '../styles/themes';
 import Navbar from './Navbar';
 import TabContainer from './TabContainer';
+import AlertContainer from './AlertContainer';
 
 const Index = ({ width }) => {
   const isDesktop = isWidthUp('sm', width);
@@ -13,6 +15,7 @@ const Index = ({ width }) => {
   return (
     <ThemeProvider theme={isDesktop ? desktopTheme : mobileTheme}>
       <div>
+        <AlertContainer />
         <Navbar />
         <Container maxWidth="xl">
           <TabContainer />
@@ -22,4 +25,4 @@ const Index = ({ width }) => {
   );
 };
 
-export default withWidth()(Index);
+export default withWidth()(withContext(Index));

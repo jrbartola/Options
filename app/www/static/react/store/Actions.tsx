@@ -6,13 +6,13 @@ import {
 
 import { searchSpreadStrategy } from '../APIClient';
 
-export const searchStrategyRequestTypes = makeRequestActionTypes(
+export const SearchStrategyRequestTypes = makeRequestActionTypes(
   'SEARCH_STRATEGY'
 );
-export const searchStrategyActions = makeRequestActions(
-  searchStrategyRequestTypes
+export const SearchStrategyActions = makeRequestActions(
+  SearchStrategyRequestTypes
 );
 export const searchStrategy = fetchMakerBuilder({
-  requestActions: searchStrategyActions,
+  requestActions: SearchStrategyActions,
   fetch: searchSpreadStrategy
 });

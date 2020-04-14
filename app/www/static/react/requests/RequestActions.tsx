@@ -51,12 +51,11 @@ export const fetchMakerBuilder = ({ requestActions, fetch }) => (
   payload = {}
 ) => {
   dispatch(requestActions.request({ payload }));
-  fetch(argObj).then(
-    resp => {
+  fetch(argObj)
+    .then(resp => {
       dispatch(requestActions.receive({ data: resp, payload }));
-    },
-    err => {
+    })
+    .catch(err => {
       dispatch(requestActions.failure({ error: err, payload }));
-    }
-  );
+    });
 };
