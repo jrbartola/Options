@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Snackbar, IconButton } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
 import { Close as CloseIcon } from '@material-ui/icons';
+
 import { useDashboardContext } from '../store/Context';
 import { removeAlert } from '../store/Actions';
+import ExpandableAlert from './ExpandableAlert';
 
 // Maps errors into alerts
 const AlertContainer = () => {
@@ -26,13 +27,11 @@ const AlertContainer = () => {
       >
         <div>
           {alerts.map((alert, i) => (
-            <Alert
+            <ExpandableAlert
               key={i}
-              severity={alert.severity}
+              alert={alert}
               onClose={() => handleClose(i)}
-            >
-              {alert.message}
-            </Alert>
+            />
           ))}
         </div>
       </Snackbar>
