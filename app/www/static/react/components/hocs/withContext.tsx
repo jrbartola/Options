@@ -1,18 +1,10 @@
 import * as React from 'react';
-import { List, Map } from 'immutable';
 
 import { DashboardContext, DispatchContext } from '../../store/Context';
 import mainReducer from '../../store/Reducer';
-import AnalysisGraph from '../../models/AnalysisGraph';
+import Store from '../../store/Store';
 
-const initialContext = {
-  graph: new AnalysisGraph(),
-  searchResults: Map({
-    strategyType: null,
-    results: List()
-  }),
-  alerts: List()
-};
+const initialContext = new Store();
 
 export const withContext = WrappedComponent => {
   return props => {

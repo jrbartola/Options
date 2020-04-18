@@ -5,5 +5,5 @@ export const searchSpreadStrategy = ({ strategyType, symbol, ...rest }) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(rest)
-  }).then(resp => resp.json());
+  });
 };

@@ -1,31 +1,40 @@
 import * as React from 'react';
 import { Snackbar, IconButton } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Alert } from '@material-ui/lab';
 import { Close as CloseIcon } from '@material-ui/icons';
+import { useDashboardContext } from '../store/Context';
+import { removeAlert } from '../store/Actions';
 
 // Maps errors into alerts
 const AlertContainer = () => {
-  const [showAlerts, setShowAlerts] = React.useState(true);
+  const [{ alerts }, dispatch] = useDashboardContext();
 
-  const handleClose = () => setShowAlerts(false);
+  const handleClose = index => dispatch(removeAlert(index));
 
   return (
     <>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={showAlerts}
+        open={true}
         autoHideDuration={6000}
-        onClose={() => setShowAlerts(false)}
+        onClose={() => {}}
         action={
-          <IconButton aria-label="close" color="inherit" onClick={handleClose}>
+          <IconButton aria-label="close" color="inherit">
             <CloseIcon />
           </IconButton>
         }
       >
-        <Alert severity="error" onClose={() => {}}>
-          <AlertTitle>Error</AlertTitle>
-          This is an error alert — <strong>check it out!</strong>
-        </Alert>
+        <div>
+          {alerts.map((alert, i) => (
+            <Alert
+              key={i}
+              severity={alert.severity}
+              onClose={() => handleClose(i)}
+            >
+              {alert.message}
+            </Alert>
+          ))}
+        </div>
       </Snackbar>
     </>
   );

@@ -52,6 +52,14 @@ export const fetchMakerBuilder = ({ requestActions, fetch }) => (
 ) => {
   dispatch(requestActions.request({ payload }));
   fetch(argObj)
+    .then(async resp => {
+      let ret;
+      if (!resp.ok) {
+        ret = await resp.json();
+        throw ret;
+      }
+      return resp.json();
+    })
     .then(resp => {
       dispatch(requestActions.receive({ data: resp, payload }));
     })
