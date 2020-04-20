@@ -9,7 +9,7 @@ class IronCondor(Spread):
         self.credit = call_spread.max_profit + put_spread.max_profit
 
     def __repr__(self):
-        return '<IronCondor({}) {}/{} - {}/{} [{} DTE] >'.format(self.symbol,
+        return '{} IC {}/{}-{}/{} ({} DTE)'.format(self.symbol,
                                                                  self.put_spread.low_leg.strike,
                                                                  self.put_spread.high_leg.strike,
                                                                  self.call_spread.low_leg.strike,
