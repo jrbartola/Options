@@ -16,10 +16,15 @@ const useStyles = makeStyles({
     '&::before': {
       display: 'none'
     }
+  },
+  expansionDetails: {
+    maxHeight: '50vh',
+    overflowY: 'auto'
   }
 });
 const ExpandableAlert = ({ alert, onClose }) => {
   const classes = useStyles();
+
   return (
     <Alert severity={alert.severity} onClose={onClose}>
       <ExpansionPanel className={classes.expansionOverrides}>
@@ -27,7 +32,7 @@ const ExpandableAlert = ({ alert, onClose }) => {
           <Typography>{alert.message}</Typography>
         </ExpansionPanelSummary>
         {alert.extra && (
-          <ExpansionPanelDetails>
+          <ExpansionPanelDetails classes={{ root: classes.expansionDetails }}>
             <Typography variant="caption">
               {alert.extra.split('\n').map((line, j) => (
                 <p key={j}>{line}</p>

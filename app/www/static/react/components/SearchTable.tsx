@@ -16,12 +16,16 @@ import SearchIcon from '@material-ui/icons/Search';
 import { useDashboardContext } from '../store/Context';
 import { useGlobalStyles } from '../styles/globalStyles';
 import TableColumns from '../constants/TableColumns';
+import { getSearchRequestStatus } from '../store/Selectors';
 
 const SearchTable = () => {
   const globalClasses = useGlobalStyles();
-  const [{ searchResults }] = useDashboardContext();
-  const strategyType = searchResults.get('strategyType');
-  const results = searchResults.get('results');
+  const [{ store }] = useDashboardContext();
+
+  const searchRequestStatus = getSearchRequestStatus(store);
+
+  const strategyType = store.getIn(['searchResults', 'strategyType']);
+  const results = store.get(['searchResults', 'results']);
 
   // Empty state
   if (results.size === 0) {
@@ -37,7 +41,11 @@ const SearchTable = () => {
           <SearchIcon />
         </Grid>
         <Grid item>
-          <Typography>Perform a search to analyze the results</Typography>
+          <Typography>
+            {strategyType === null
+              ? 'Perform a search to analyze the results'
+              : ''}
+          </Typography>
         </Grid>
       </Grid>
     );

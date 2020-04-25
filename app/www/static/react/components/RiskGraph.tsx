@@ -4,11 +4,7 @@ import CanvasJSReact from '../../js/canvasjs.react';
 import { useDashboardContext } from '../store/Context';
 
 const RiskGraph = () => {
-  const [
-    {
-      graph: { dataPoints }
-    }
-  ] = useDashboardContext();
+  const [{ store }] = useDashboardContext();
 
   return (
     <CanvasJSReact.CanvasJSChart
@@ -25,7 +21,7 @@ const RiskGraph = () => {
         data: [
           {
             type: 'line',
-            dataPoints
+            dataPoints: store.getIn(['graph', 'dataPoints'], [])
           }
         ]
       }}

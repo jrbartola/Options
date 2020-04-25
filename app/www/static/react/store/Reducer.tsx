@@ -2,8 +2,9 @@ import { SearchStrategyRequestTypes, ActionTypes } from './Actions';
 import { isEmptyObject } from '../utils/objUtils';
 import { mapSearchResponse } from '../utils/responseMappers';
 import ToastAlert, { AlertSeverity } from '../models/ToastAlert';
+import RequestReducer from '../requests/RequestReducer';
 
-export default (state, action) => {
+const StoreReducer = (state, action) => {
   switch (action.type) {
     case SearchStrategyRequestTypes.RECEIVE: {
       if (!isEmptyObject(action.payload.data)) {
@@ -35,3 +36,8 @@ export default (state, action) => {
       return state;
   }
 };
+
+export default (state, action) => ({
+  store: StoreReducer(state, action),
+  requestStatuses: RequestReducer(state, action)
+});

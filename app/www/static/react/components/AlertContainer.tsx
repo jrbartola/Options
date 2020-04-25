@@ -8,7 +8,7 @@ import ExpandableAlert from './ExpandableAlert';
 
 // Maps errors into alerts
 const AlertContainer = () => {
-  const [{ alerts }, dispatch] = useDashboardContext();
+  const [{ store }, dispatch] = useDashboardContext();
 
   const handleClose = index => dispatch(removeAlert(index));
 
@@ -26,7 +26,7 @@ const AlertContainer = () => {
         }
       >
         <div>
-          {alerts.map((alert, i) => (
+          {store.get('alerts').map((alert, i) => (
             <ExpandableAlert
               key={i}
               alert={alert}
