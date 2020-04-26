@@ -1,7 +1,7 @@
 import * as React from 'react';
-import CanvasJSReact from '../../js/canvasjs.react';
+import CanvasJSReact from '../../../../js/canvasjs.react';
 
-import { useDashboardContext } from '../store/Context';
+import { useDashboardContext } from '../../../store/Context';
 
 const RiskGraph = () => {
   const [{ store }] = useDashboardContext();
@@ -13,17 +13,17 @@ const RiskGraph = () => {
         animationEnabled: true,
         zoomEnabled: true,
         title: {
-          text: 'Iron Condor SPY 4/17'
+          text: 'Iron Condor SPY 4/17',
         },
         axisY: {
-          includeZero: false
+          includeZero: false,
         },
         data: [
           {
             type: 'line',
-            dataPoints: store.getIn(['graph', 'dataPoints'], [])
-          }
-        ]
+            dataPoints: store.getIn(['graph', 'dataPoints'], []),
+          },
+        ],
       }}
     />
   );

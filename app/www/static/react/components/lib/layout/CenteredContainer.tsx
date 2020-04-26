@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useGlobalStyles } from '../styles/globalStyles';
+import { useGlobalStyles } from '../../../styles/globalStyles';
 import { Grid } from '@material-ui/core';
 
 const CenteredContainer = ({ children }) => {

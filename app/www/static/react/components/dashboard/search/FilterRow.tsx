@@ -6,14 +6,14 @@ import {
   MenuItem,
   InputLabel,
   TextField,
-  IconButton
+  IconButton,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-import { useGlobalStyles } from '../styles/globalStyles';
-import { keyToAlias } from '../utils/stringUtils';
-import FilterTypes from '../constants/FilterTypes';
-import ComparisonOps, { toReadable } from '../constants/ComparisonOps';
+import { useGlobalStyles } from '../../../styles/globalStyles';
+import { keyToAlias } from '../../../utils/stringUtils';
+import FilterTypes from '../../../constants/FilterTypes';
+import ComparisonOps, { toReadable } from '../../../constants/ComparisonOps';
 
 const FilterRow = ({ filter, updateFilter, canDelete, onDelete }) => {
   const globalClasses = useGlobalStyles();
@@ -36,7 +36,7 @@ const FilterRow = ({ filter, updateFilter, canDelete, onDelete }) => {
               updateFilter('filterType', value)
             }
           >
-            {Object.keys(FilterTypes).map(filterType => (
+            {Object.keys(FilterTypes).map((filterType) => (
               <MenuItem key={filterType} value={filterType}>
                 {keyToAlias(filterType)}
               </MenuItem>
@@ -57,7 +57,7 @@ const FilterRow = ({ filter, updateFilter, canDelete, onDelete }) => {
               updateFilter('comparisonOp', value)
             }
           >
-            {Object.keys(ComparisonOps).map(compOp => (
+            {Object.keys(ComparisonOps).map((compOp) => (
               <MenuItem key={compOp} value={compOp}>
                 {toReadable(compOp)}
               </MenuItem>

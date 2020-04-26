@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CircularProgress, Grid } from '@material-ui/core';
 import { useGlobalStyles } from '../../styles/globalStyles';
-import CenteredContainer from '../CenteredContainer';
+import CenteredContainer from '../lib/layout/CenteredContainer';
 
 const LoaderOverlay = ({ isLoading, isFailed, ErrorElement, children }) => {
   const globalClasses = useGlobalStyles();

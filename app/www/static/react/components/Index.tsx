@@ -5,9 +5,9 @@ import { ThemeProvider } from '@material-ui/core';
 
 import { withContext } from './hocs/withContext';
 import { desktopTheme, mobileTheme } from '../styles/themes';
-import Navbar from './Navbar';
-import TabContainer from './TabContainer';
-import AlertContainer from './AlertContainer';
+import Navbar from './dashboard/Navbar';
+import TabContainer from './dashboard/TabContainer';
+import AlertContainer from './lib/AlertContainer';
 
 const Index = ({ width }) => {
   const isDesktop = isWidthUp('sm', width);

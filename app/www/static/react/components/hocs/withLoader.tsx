@@ -3,7 +3,7 @@ import { useDashboardContext } from '../../store/Context';
 import { RequestStatus } from '../../requests/RequestTypes';
 import { HOCMaker, Context } from '../../types';
 import LoaderOverlay from './LoaderOverlay';
-import ErrorAlert from '../ErrorAlert';
+import ErrorAlert from '../lib/ErrorAlert';
 
 export const withLoader: HOCMaker = (
   getStatus: (context: Context) => RequestStatus,

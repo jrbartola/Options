@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Tabs, Tab, Paper, makeStyles } from '@material-ui/core';
-import SearchTabContent from './SearchTabContent';
-import AnalyzeTabContent from './AnalyzeTabContent';
+import SearchTabContent from './search/SearchTabContent';
+import AnalyzeTabContent from './analyze/AnalyzeTabContent';
 
 const TabContainer = () => {
   const [tabIndex, setTabIndex] = React.useState(0);

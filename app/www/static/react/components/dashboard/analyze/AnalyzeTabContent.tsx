@@ -5,10 +5,10 @@ import Grid from '@material-ui/core/Grid';
 
 import RiskGraph from './RiskGraph';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(2)
-  }
+    margin: theme.spacing(2),
+  },
 }));
 
 const AnalyzeTabContent = () => {

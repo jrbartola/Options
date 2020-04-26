@@ -13,11 +13,11 @@ import {
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
-import { useDashboardContext } from '../store/Context';
-import { useGlobalStyles } from '../styles/globalStyles';
-import TableColumns from '../constants/TableColumns';
-import { getSearchRequestStatus } from '../store/Selectors';
-import { withLoader } from './hocs/withLoader';
+import { useDashboardContext } from '../../../store/Context';
+import { useGlobalStyles } from '../../../styles/globalStyles';
+import TableColumns from '../../../constants/TableColumns';
+import { getSearchRequestStatus } from '../../../store/Selectors';
+import { withLoader } from '../../hocs/withLoader';
 
 const SearchTable = () => {
   const globalClasses = useGlobalStyles();

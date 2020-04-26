@@ -6,10 +6,10 @@ import Grid from '@material-ui/core/Grid';
 import SearchCard from './SearchCard';
 import SearchTable from './SearchTable';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    margin: theme.spacing(2)
-  }
+    margin: theme.spacing(2),
+  },
 }));
 
 const SearchTabContent = () => {

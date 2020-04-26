@@ -11,22 +11,22 @@ import {
   FormControlLabel,
   Radio,
   FormLabel,
-  Slider
+  Slider,
 } from '@material-ui/core';
 
-import StrategyTypes from '../constants/StrategyTypes';
-import OptionTypes from '../constants/OptionTypes';
-import { keyToAlias } from '../utils/stringUtils';
+import StrategyTypes from '../../../constants/StrategyTypes';
+import OptionTypes from '../../../constants/OptionTypes';
+import { keyToAlias } from '../../../utils/stringUtils';
 import FilterForm from './FilterForm';
-import { useGlobalStyles } from '../styles/globalStyles';
+import { useGlobalStyles } from '../../../styles/globalStyles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   form: {
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
   bottomMargin: {
-    marginBottom: theme.spacing(2)
-  }
+    marginBottom: theme.spacing(2),
+  },
 }));
 
 const SearchForm = ({ formFields, setFormFields }) => {
@@ -41,14 +41,14 @@ const SearchForm = ({ formFields, setFormFields }) => {
       return;
     }
 
-    setFormFields(fields => ({
+    setFormFields((fields) => ({
       ...fields,
-      symbol: (value as string).toUpperCase()
+      symbol: (value as string).toUpperCase(),
     }));
   };
 
   const handleTypeChange = ({ target: { value } }) => {
-    setFormFields(fields => ({ ...fields, optionType: value as string }));
+    setFormFields((fields) => ({ ...fields, optionType: value as string }));
   };
 
   return (
@@ -76,13 +76,13 @@ const SearchForm = ({ formFields, setFormFields }) => {
               label="Strategy"
               value={selectedStrategy}
               onChange={({ target: { value } }) =>
-                setFormFields(fields => ({
+                setFormFields((fields) => ({
                   ...fields,
-                  selectedStrategy: value as string
+                  selectedStrategy: value as string,
                 }))
               }
             >
-              {Object.keys(StrategyTypes).map(strategyType => (
+              {Object.keys(StrategyTypes).map((strategyType) => (
                 <MenuItem key={strategyType} value={strategyType}>
                   {keyToAlias(strategyType)}
                 </MenuItem>
@@ -100,7 +100,7 @@ const SearchForm = ({ formFields, setFormFields }) => {
               onChange={handleTypeChange}
               row
             >
-              {Object.keys(OptionTypes).map(optionType => (
+              {Object.keys(OptionTypes).map((optionType) => (
                 <FormControlLabel
                   key={optionType}
                   value={optionType}
@@ -122,12 +122,12 @@ const SearchForm = ({ formFields, setFormFields }) => {
             <Slider
               value={dte}
               onChange={(_, value) =>
-                setFormFields(fields => ({ ...fields, dte: value }))
+                setFormFields((fields) => ({ ...fields, dte: value }))
               }
               step={1}
               min={1}
               max={60}
-              marks={[1, 30, 45, 60].map(i => ({ value: i, label: i }))}
+              marks={[1, 30, 45, 60].map((i) => ({ value: i, label: i }))}
               valueLabelDisplay="auto"
             />
           </FormControl>

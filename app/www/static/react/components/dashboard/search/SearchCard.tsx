@@ -9,25 +9,25 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import SearchForm from './SearchForm';
-import SearchFilter from '../models/SearchFilter';
-import { useDashboardContext } from '../store/Context';
-import { searchStrategy } from '../store/Actions';
+import SearchFilter from '../../../models/SearchFilter';
+import { useDashboardContext } from '../../../store/Context';
+import { searchStrategy } from '../../../store/Actions';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     padding: theme.spacing(2),
-    paddingTop: theme.spacing(1)
+    paddingTop: theme.spacing(1),
   },
   cardTitle: {
     fontSize: 18,
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   cardContent: {
-    padding: 0
+    padding: 0,
   },
   form: {
-    margin: theme.spacing(1)
-  }
+    margin: theme.spacing(1),
+  },
 }));
 
 const SearchCard = () => {
@@ -38,11 +38,11 @@ const SearchCard = () => {
     selectedStrategy: '',
     optionType: null,
     filters: List([SearchFilter.empty()]),
-    dte: [30, 45]
+    dte: [30, 45],
   });
 
   const handleSearch = () => {
-    if (formFields.filters.some(_ => _.isEmpty)) {
+    if (formFields.filters.some((_) => _.isEmpty)) {
       //TODO
       alert('must fill out all filters');
       return;
@@ -53,7 +53,7 @@ const SearchCard = () => {
       symbol: formFields.symbol,
       lowDte: formFields.dte[0],
       highDte: formFields.dte[1],
-      filters: formFields.filters.map(_ => _.toJS())
+      filters: formFields.filters.map((_) => _.toJS()),
     });
   };
 

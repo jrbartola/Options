@@ -2,15 +2,15 @@ import * as React from 'react';
 import { Snackbar, IconButton } from '@material-ui/core';
 import { Close as CloseIcon } from '@material-ui/icons';
 
-import { useDashboardContext } from '../store/Context';
-import { removeAlert } from '../store/Actions';
+import { useDashboardContext } from '../../store/Context';
+import { removeAlert } from '../../store/Actions';
 import ExpandableAlert from './ExpandableAlert';
 
 // Maps errors into alerts
 const AlertContainer = () => {
   const [{ store }, dispatch] = useDashboardContext();
 
-  const handleClose = index => dispatch(removeAlert(index));
+  const handleClose = (index) => dispatch(removeAlert(index));
 
   return (
     <>
