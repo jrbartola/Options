@@ -24,7 +24,7 @@ const StoreReducer = (state, action) => {
           new ToastAlert({
             message,
             extra: trace,
-            severity: AlertSeverity.ERROR
+            severity: AlertSeverity.ERROR,
           })
         )
       );
@@ -38,6 +38,6 @@ const StoreReducer = (state, action) => {
 };
 
 export default (state, action) => ({
-  store: StoreReducer(state, action),
-  requestStatuses: RequestReducer(state, action)
+  store: StoreReducer(state.store, action),
+  requestStatuses: RequestReducer(state.requestStatuses, action),
 });

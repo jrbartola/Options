@@ -17,11 +17,11 @@ import { useDashboardContext } from '../store/Context';
 import { useGlobalStyles } from '../styles/globalStyles';
 import TableColumns from '../constants/TableColumns';
 import { getSearchRequestStatus } from '../store/Selectors';
+import { withLoader } from './hocs/withLoader';
+
 const SearchTable = () => {
   const globalClasses = useGlobalStyles();
   const [context] = useDashboardContext();
-
-  const searchRequestStatus = getSearchRequestStatus(context);
 
   const strategyType = context.store.getIn(['searchResults', 'strategyType']);
   const results = context.store.getIn(['searchResults', 'results']);
@@ -78,4 +78,7 @@ const SearchTable = () => {
   );
 };
 
-export default SearchTable;
+export default withLoader(
+  getSearchRequestStatus,
+  'There was a problem fetching strategy results.'
+)(SearchTable);
