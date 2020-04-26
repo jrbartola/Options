@@ -9,7 +9,7 @@ import {
   Table,
   TableCellProps,
   Typography,
-  Grid
+  Grid,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
@@ -17,15 +17,14 @@ import { useDashboardContext } from '../store/Context';
 import { useGlobalStyles } from '../styles/globalStyles';
 import TableColumns from '../constants/TableColumns';
 import { getSearchRequestStatus } from '../store/Selectors';
-
 const SearchTable = () => {
   const globalClasses = useGlobalStyles();
-  const [{ store }] = useDashboardContext();
+  const [context] = useDashboardContext();
 
-  const searchRequestStatus = getSearchRequestStatus(store);
+  const searchRequestStatus = getSearchRequestStatus(context);
 
-  const strategyType = store.getIn(['searchResults', 'strategyType']);
-  const results = store.get(['searchResults', 'results']);
+  const strategyType = context.store.getIn(['searchResults', 'strategyType']);
+  const results = context.store.getIn(['searchResults', 'results']);
 
   // Empty state
   if (results.size === 0) {
