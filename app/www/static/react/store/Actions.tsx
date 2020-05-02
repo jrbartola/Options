@@ -4,7 +4,7 @@ import {
   makeRequestActions,
   fetchMakerBuilder
 } from '../requests/RequestActions';
-import { searchSpreadStrategy } from '../APIClient';
+import { searchSpreadStrategy, updateEnvSettings } from '../APIClient';
 
 export enum ActionTypes {
   ADD_ALERT,
@@ -20,6 +20,17 @@ export const SearchStrategyActions = makeRequestActions(
 export const searchStrategy = fetchMakerBuilder({
   requestActions: SearchStrategyActions,
   fetch: searchSpreadStrategy
+});
+
+export const UpdateSettingsRequestTypes = makeRequestActionTypes(
+  'UPDATE_SETTINGS'
+);
+export const UpdateSettingsActions = makeRequestActions(
+  UpdateSettingsRequestTypes
+);
+export const updateSettings = fetchMakerBuilder({
+  requestActions: UpdateSettingsActions,
+  fetch: updateEnvSettings
 });
 
 export const addAlert = createAction(ActionTypes.ADD_ALERT);

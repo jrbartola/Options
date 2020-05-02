@@ -16,17 +16,18 @@ const SettingsMenu = () => {
     setMenuAnchor(null);
   };
 
+  const openTokenModal = () => {
+    setTokenModalOpen(true);
+    closeMenu();
+  };
+
   const closeTokenModal = () => {
     setTokenModalOpen(false);
   };
 
   return (
     <>
-      <TokenDialog
-        isOpen={tokenModalOpen}
-        onClose={closeTokenModal}
-        onSave={closeTokenModal}
-      />
+      <TokenDialog isOpen={tokenModalOpen} onClose={closeTokenModal} />
       <IconButton onClick={openMenu} color="inherit">
         <SettingsIcon />
       </IconButton>
@@ -35,17 +36,17 @@ const SettingsMenu = () => {
         anchorEl={menuAnchor}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         keepMounted
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'right'
         }}
         open={open}
-        onClose={() => setMenuAnchor(null)}
+        onClose={closeMenu}
       >
-        <MenuItem onClick={() => setTokenModalOpen(true)}>Set token</MenuItem>
+        <MenuItem onClick={openTokenModal}>Set token</MenuItem>
       </Menu>
     </>
   );

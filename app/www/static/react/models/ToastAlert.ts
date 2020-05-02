@@ -10,12 +10,12 @@ export enum AlertSeverity {
 
 const defaults = {
   message: '',
-  extra: '',
+  extra: null,
   severity: null
 };
 
 class ToastAlert extends Record(defaults) {
-  constructor({ message, extra, severity = AlertSeverity.INFO }) {
+  constructor({ message, extra = null, severity = AlertSeverity.INFO }) {
     super({ message: `${capitalize(severity)}: ${message}`, extra, severity });
   }
 }

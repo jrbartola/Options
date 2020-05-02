@@ -1,4 +1,8 @@
-import { SearchStrategyRequestTypes, ActionTypes } from './Actions';
+import {
+  SearchStrategyRequestTypes,
+  ActionTypes,
+  UpdateSettingsRequestTypes
+} from './Actions';
 import { isEmptyObject } from '../utils/objUtils';
 import { mapSearchResponse } from '../utils/responseMappers';
 import ToastAlert, { AlertSeverity } from '../models/ToastAlert';
@@ -24,7 +28,33 @@ const StoreReducer = (state, action) => {
           new ToastAlert({
             message,
             extra: trace,
-            severity: AlertSeverity.ERROR,
+            severity: AlertSeverity.ERROR
+          })
+        )
+      );
+    }
+    case UpdateSettingsRequestTypes.RECEIVE: {
+      debugger;
+      return state.set(
+        'alerts',
+        state.get('alerts').push(
+          new ToastAlert({
+            message: 'Your client token has been updated.',
+            severity: AlertSeverity.SUCCESS
+          })
+        )
+      );
+    }
+    case UpdateSettingsRequestTypes.FAILURE: {
+      debugger;
+      const { message, trace } = action.payload.error;
+      return state.set(
+        'alerts',
+        state.get('alerts').push(
+          new ToastAlert({
+            message,
+            extra: trace,
+            severity: AlertSeverity.ERROR
           })
         )
       );
@@ -39,5 +69,5 @@ const StoreReducer = (state, action) => {
 
 export default (state, action) => ({
   store: StoreReducer(state.store, action),
-  requestStatuses: RequestReducer(state.requestStatuses, action),
+  requestStatuses: RequestReducer(state.requestStatuses, action)
 });

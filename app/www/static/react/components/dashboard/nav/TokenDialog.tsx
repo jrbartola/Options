@@ -6,21 +6,34 @@ import {
   Button,
   DialogActions,
   DialogContentText,
-  TextField,
+  TextField
 } from '@material-ui/core';
+
+import { useDashboardContext } from '../../../store/Context';
+import { updateSettings } from '../../../store/Actions';
 
 interface TokenDialogProps {
   isOpen: boolean;
-  onSave: () => void;
   onClose: () => void;
 }
 
-const TokenDialog = ({ isOpen, onSave, onClose }: TokenDialogProps) => {
+const TokenDialog = ({ isOpen, onClose }: TokenDialogProps) => {
+  const [, dispatch] = useDashboardContext();
+  const inputRef = React.useRef(null);
+
+  const onSave = () => {
+    updateSettings(dispatch, {
+      key: 'CLIENT_TOKEN',
+      value: inputRef.current.value
+    });
+    onClose();
+  };
+
   return (
     <Dialog
       open={isOpen}
       onClose={onClose}
-      maxWidth="md"
+      maxWidth="sm"
       fullWidth={true}
       aria-labelledby="token-title"
       aria-describedby="token-description"
@@ -30,7 +43,14 @@ const TokenDialog = ({ isOpen, onSave, onClose }: TokenDialogProps) => {
         <DialogContentText id="alert-dialog-description">
           Enter your new client token
         </DialogContentText>
-        <TextField variant="outlined" rows={4} autoFocus multiline fullWidth />
+        <TextField
+          variant="outlined"
+          inputRef={inputRef}
+          rows={4}
+          autoFocus
+          multiline
+          fullWidth
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onSave} variant="contained" color="primary">

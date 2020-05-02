@@ -37,14 +37,6 @@ def search_strategy(strategy_type):
     merged = {'results': json.loads(results.to_json(orient='index')), 'strategyType': strategy_type}
     return jsonify(merged)
 
-
-# 400 handler
-@search_api.errorhandler(BadRequest)
-def handle_bad_request(error):
-    response = jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
-
 # 500+ errors/generic catchall
 @search_api.errorhandler(Exception)
 def handle_server_error(e):
