@@ -7,6 +7,7 @@ from options.constants.contracts import CALL, PUT
 from options.models.option_contract import OptionContract
 from options.models.vertical_spread import VerticalSpread
 from options.util.maths.vix import vix
+from options.exceptions.invalid_spread import InvalidSpreadError
 
 def process_verticals(symbol, contract_type, credit_or_debit, max_strike_width=10, **kwargs):
     assert(credit_or_debit in {CREDIT, DEBIT})
@@ -14,7 +15,7 @@ def process_verticals(symbol, contract_type, credit_or_debit, max_strike_width=1
     dte_maps, underlying_price = get_option_chain(symbol, **kwargs)
     volatility = kwargs.get('volatility') or vix(symbol)
 
-    if credit_or_debit == CREDIT:
+    if credit_or_debit == CREDIT: 
         return process_credit_spreads(dte_maps[contract_type], contract_type, underlying_price, volatility, max_strike_width)
 
 def process_credit_spreads(dte_map, contract_type, underlying_price, volatility, max_strike_width=None):
@@ -53,8 +54,12 @@ def process_credit_spreads(dte_map, contract_type, underlying_price, volatility,
                                                   ask=low_option['ask'],
                                                   is_short=contract_type == CALL,
                                                   volatility=volatility)
+                try:
+                    vertical_model = VerticalSpread(high_leg=high_option_model, low_leg=low_option_model, is_credit=True)
+                except InvalidSpreadError as e:
+                    print(f'{e}, skipping...')
+                    continue
 
-                vertical_model = VerticalSpread(high_leg=high_option_model, low_leg=low_option_model, is_credit=True)
                 strike_key = '{}/{}'.format(low_option_model.strike, high_option_model.strike)
 
                 result_dte_map[dte][strike_key] = vertical_model

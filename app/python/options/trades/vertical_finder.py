@@ -7,9 +7,10 @@ from options.constants.transactions import CREDIT
 from options.models.spread_filter import SpreadFilter
 from options.models.option_contract import OptionContract
 
-default_filter = SpreadFilter().add_criteria(lambda spread: spread.has_fair_pricing())
+# TODO: Uncomment this
+# default_filter = SpreadFilter().add_criteria(lambda spread: spread.has_fair_pricing())
 
-def find_verticals(symbol, contract_type, spread_filter=default_filter):
+def find_verticals(symbol, contract_type, spread_filter=None):
     data = process_verticals(symbol, contract_type, CREDIT, max_strike_width=10)
     spreads = []
 

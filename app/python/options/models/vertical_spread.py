@@ -3,6 +3,7 @@ from scipy.stats import norm
 from options.constants.contracts import CALL, PUT
 from options.models.spread import Spread
 from options.util.maths.volatility import to_dte_volatility
+from options.exceptions.invalid_spread import InvalidSpreadError
 
 class VerticalSpread(Spread):
     def __init__(self, high_leg, low_leg, is_credit=False):
@@ -24,7 +25,7 @@ class VerticalSpread(Spread):
         self.value = (self.bid + self.ask) / 2
 
         if self.value < 0:
-            raise ValueError(f'Value of a vertical spread cannot be negative (got {self.value})')
+            raise InvalidSpreadError(f'Value of a vertical spread cannot be negative (got {self.value})')
 
     def __repr__(self):
         return '<Vertical({} - {}) {}/{} [{} DTE]>'.format(self.high_leg.symbol, self.contract_type, self.low_leg.strike, self.high_leg.strike, self.dte)
