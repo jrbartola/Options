@@ -3,3 +3,5 @@ __pycache__/
 .vscode/
 database.conf
 node_modules/
+.env
+options_venv/

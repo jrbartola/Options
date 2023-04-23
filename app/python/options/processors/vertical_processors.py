@@ -1,4 +1,3 @@
-
 from options.api.option_chain import get_option_chain
 from options.api.quotes import get_price_quote
 
@@ -9,16 +8,26 @@ from options.models.vertical_spread import VerticalSpread
 from options.util.maths.vix import vix
 from options.exceptions.invalid_spread import InvalidSpreadError
 
-def process_verticals(symbol, contract_type, credit_or_debit, max_strike_width=10, **kwargs):
-    assert(credit_or_debit in {CREDIT, DEBIT})
 
-    dte_maps, underlying_price = get_option_chain(symbol, **kwargs)
-    volatility = kwargs.get('volatility') or vix(symbol)
+def process_verticals(
+    symbol, contract_type, credit_or_debit, max_strike_width=10, **kwargs
+):
+    assert credit_or_debit in {CREDIT, DEBIT}
 
-    if credit_or_debit == CREDIT: 
-        return process_credit_spreads(dte_maps[contract_type], contract_type, underlying_price, volatility, max_strike_width)
+    option_results = get_option_chain(symbol, **kwargs)
 
-def process_credit_spreads(dte_map, contract_type, underlying_price, volatility, max_strike_width=None):
+    if credit_or_debit == CREDIT:
+        return process_credit_spreads(
+            option_results["dte_maps"][contract_type],
+            contract_type,
+            option_results["price"],
+            max_strike_width,
+        )
+
+
+def process_credit_spreads(
+    dte_map, contract_type, underlying_price, max_strike_width=None
+):
     result_dte_map = {}
 
     for dte, strike_map in dte_map.items():
@@ -35,35 +44,43 @@ def process_credit_spreads(dte_map, contract_type, underlying_price, volatility,
                 if max_strike_width and high_strike - low_strike > max_strike_width:
                     break
 
-                high_option_model = OptionContract(price=underlying_price,
-                                                   symbol=high_option['symbol'],
-                                                   contract_type=contract_type,
-                                                   strike=high_option['strikePrice'],
-                                                   dte=dte,
-                                                   bid=high_option['bid'],
-                                                   ask=high_option['ask'],
-                                                   is_short=contract_type == PUT,
-                                                   volatility=volatility)
+                high_option_model = OptionContract(
+                    price=underlying_price,
+                    symbol=high_option["symbol"],
+                    contract_type=contract_type,
+                    strike=high_option["strikePrice"],
+                    dte=dte,
+                    bid=high_option["bid"],
+                    ask=high_option["ask"],
+                    is_short=contract_type == PUT,
+                    volatility=high_option["volatility"],
+                )
 
-                low_option_model = OptionContract(price=underlying_price,
-                                                  symbol=low_option['symbol'],
-                                                  contract_type=contract_type,
-                                                  strike=low_option['strikePrice'],
-                                                  dte=dte,
-                                                  bid=low_option['bid'],
-                                                  ask=low_option['ask'],
-                                                  is_short=contract_type == CALL,
-                                                  volatility=volatility)
+                low_option_model = OptionContract(
+                    price=underlying_price,
+                    symbol=low_option["symbol"],
+                    contract_type=contract_type,
+                    strike=low_option["strikePrice"],
+                    dte=dte,
+                    bid=low_option["bid"],
+                    ask=low_option["ask"],
+                    is_short=contract_type == CALL,
+                    volatility=low_option["volatility"],
+                )
                 try:
-                    vertical_model = VerticalSpread(high_leg=high_option_model, low_leg=low_option_model, is_credit=True)
+                    vertical_model = VerticalSpread(
+                        high_leg=high_option_model,
+                        low_leg=low_option_model,
+                        is_credit=True,
+                    )
                 except InvalidSpreadError as e:
-                    print(f'{e}, skipping...')
+                    print(f"{e}, skipping...")
                     continue
 
-                strike_key = '{}/{}'.format(low_option_model.strike, high_option_model.strike)
+                strike_key = "{}/{}".format(
+                    low_option_model.strike, high_option_model.strike
+                )
 
                 result_dte_map[dte][strike_key] = vertical_model
-    
-    return result_dte_map
-                
 
+    return result_dte_map
